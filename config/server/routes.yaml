@@ -1,0 +1,27 @@
+hapi:
+  routes:
+    api:
+      - path: /api/login
+        method: post
+        options:
+          auth: false
+
+      - path: /api/upload
+        method: post
+
+      - path: /api/graphql
+        method: post
+
+    cors:
+      origin:
+        - other_host:4000
+      headers:
+        - Accept
+        - Content-Type,
+      additionalHeaders:
+        - X-Requested-With,
+validate:
+  payload:
+    maxBytes: 209715200,
+    output: file,
+    parse: true

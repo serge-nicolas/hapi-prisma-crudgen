@@ -1,0 +1,7 @@
+byRoute:
+  login:
+    email: asRequiredEmail
+  upload:
+    id: asObjectId
+  graphql:
+    email: asRequiredEmail

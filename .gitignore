@@ -1,0 +1,12 @@
+node_modules
+.env
+*.log
+dist/assets/*
+.yarn
+*.tsbuildinfo
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+schema/*

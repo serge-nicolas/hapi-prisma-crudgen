@@ -1,0 +1,18 @@
+protectedFields:
+  - passphrase
+  - password
+
+client: useExternal
+
+auth: passworlesswithemail
+
+
+imports:
+  - { resource: ./config/server/actions.yaml }
+  - { resource: ./config/server/routes.yaml }
+  - { resource: ./config/server/auth.yaml }
+
+redirect:
+  login:
+    success: "/"
+    failed: "/login"

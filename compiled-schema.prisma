@@ -1,0 +1,251 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch"]
+}
+
+//test2
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// items
+
+type keyValPair {
+  key String
+  val String
+}
+
+model Authtoken {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String   @unique @db.ObjectId
+  ttl    DateTime
+  token  String
+}
+
+model keyVal {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  key     String
+  val     String
+  Block   Block?  @relation(fields: [blockId], references: [id])
+  blockId String? @db.ObjectId
+}
+
+enum LoginType {
+  passwordlesswithemail
+  sso
+  oauth
+}
+
+enum Role {
+  USER
+  ADMIN
+  API
+}
+
+enum UserStatus {
+  active
+  disabled
+  hidden
+  archived
+  deleted
+  banned
+}
+
+model Block {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy User?   @relation(fields: [userId], references: [id])
+  userId    String? @db.ObjectId
+
+  index       BigInt
+  data        Json?
+  hash        String
+  parentBlock Block?    @relation(name: "parentBlock", fields: [parentId, parentHash], references: [id, hash], onDelete: NoAction, onUpdate: NoAction)
+  Block       Block[]   @relation(name: "parentBlock")
+  parentId    String?   @db.ObjectId
+  parentHash  String?
+  comments    Comment[]
+  tag         String[]
+  keyVal      keyVal[]
+
+  @@unique([id, hash])
+}
+
+model Comment {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy User?   @relation(fields: [userId], references: [id])
+  userId    String? @db.ObjectId
+
+  message String
+  Block   Block  @relation(fields: [blockId], references: [id])
+  blockId String @db.ObjectId
+}
+
+model DocumentEntity {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy User?   @relation(fields: [userId], references: [id])
+  userId    String? @db.ObjectId
+
+  type    String
+  tag     String[]
+  content Json?
+  script  String
+}
+
+model i18n {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy User?   @relation(fields: [userId], references: [id])
+  userId    String? @db.ObjectId
+
+  index      BigInt
+  key        String
+  translate  String
+  sourceLang String
+  targetLang String
+
+  @@unique([id, key])
+}
+
+model Image {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy User?   @relation(fields: [userId], references: [id])
+  userId    String? @db.ObjectId
+
+  src            String
+  classification String
+  objects        String
+  url            String
+  mime           String
+  comment        String?
+  s3Key          String
+  bucket         String
+}
+
+model KeyPair {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy User?   @relation(fields: [userId], references: [id])
+  userId    String? @db.ObjectId
+
+  publickey  String
+  privatekey String
+}
+
+model Log {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy User?   @relation(fields: [userId], references: [id])
+  userId    String? @db.ObjectId
+
+  recordId    Int
+  recordTitle String?
+  difference  Json?   @db.Json
+  action      String
+  resource    String
+}
+
+model Post {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy User?   @relation(fields: [userId], references: [id])
+  userId    String? @db.ObjectId
+
+  title   String
+  content String
+
+  @@fulltext([title(sort: Desc), content])
+}
+
+model Task {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy User?   @relation(fields: [userId], references: [id])
+  userId    String? @db.ObjectId
+
+  channel String
+  params  Json
+  job     Json
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email      String       @unique
+  password   String
+  name       String?
+  status     String?
+  logged     Boolean?     @default(false)
+  role       Role
+  groups     UserGroups[]
+  blocks     Block[]
+  keys       KeyPair[]
+  authtoken  Authtoken?
+  comments   Comment[]
+  images     Image[]
+  logs       Log[]
+  userStatus UserStatus   @default(active)
+
+  passphrase     String?
+  Task           Task[]
+  loginType      LoginType        @default(passwordlesswithemail)
+  DocumentEntity DocumentEntity[]
+  i18n           i18n[]
+  Post           Post[]
+
+  @@unique([id, email])
+}
+
+model UserGroups {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name   String
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String? @db.ObjectId
+}

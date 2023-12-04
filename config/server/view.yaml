@@ -1,0 +1,3 @@
+viewConfig:
+  template: Pug
+  paths: templates

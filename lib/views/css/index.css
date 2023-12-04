@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700");
+@import "./form.css";
+@import "./nav.css";
+@import "./table.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Poppins, sans-serif;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.overlay {
+  position: relative;
+}
+
+body {
+  @apply grid min-h-full leading-normal tracking-normal w-full place-items-center dark:bg-slate-800;
+}
+main {
+  @apply grid place-items-center drop-shadow-xl w-4/5 bg-slate-900;
+}

@@ -1,0 +1,22 @@
+.form__main {
+  @apply w-full grid grid-cols-4 gap-4;
+}
+.form__elt-input {
+  @apply leading-tight shadow appearance-none border rounded w-full py-2 px-3 text-gray-700;
+}
+.form__elt-boolean {
+  @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded;
+}
+.form__elt-label {
+  @apply ml-4 ms-2 text-sm font-medium text-gray-900;
+}
+.form__elt-select {
+  @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full py-2 px-3;
+}
+
+input[type="search"] {
+  @apply block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50;
+}
+input[type="submit"] {
+  @apply text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800;
+}

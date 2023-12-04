@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "target": "esnext",
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "outDir": "dist",
+        "baseUrl": "./",
+        "paths": {
+            "*": [
+                "./types/*",
+                "lib/server/typings/*"
+            ]
+        },
+        "types": ["jest", "node", "@types/jest"],
+    },
+    "ts-node": {
+        "esm": true,
+        "experimentalSpecifierResolution": "node"
+    },
+    "include": [
+        "types/**/*.d.ts",
+        "lib/server/typings/**/*.d.ts",
+        "lib/server/test/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}

@@ -1,0 +1,15 @@
+form.max-w-sm.mx-auto
+  .flex.mb-2.space-x-2
+    div
+      input#code-1.block.w-9.h-9.py-3.text-sm.font-extrabold.text-center.text-gray-900.bg-white.border.border-gray-300.rounded-lg(type="text", maxlength="1", onkeyup="focusNextInput(this, \'code-1\', \'code-2\')", required)
+    div
+      input#code-2.block.w-9.h-9.py-3.text-sm.font-extrabold.text-center.text-gray-900.bg-white.border.border-gray-300.rounded-lg(type="text", maxlength="1", onkeyup="focusNextInput(this, \'code-1\', \'code-3\')", required)
+    div
+      input#code-3.block.w-9.h-9.py-3.text-sm.font-extrabold.text-center.text-gray-900.bg-white.border.border-gray-300.rounded-lg(type="text", maxlength="1", onkeyup="focusNextInput(this, \'code-2\', \'code-4\')", required)
+    div
+      input#code-4.block.w-9.h-9.py-3.text-sm.font-extrabold.text-center.text-gray-900.bg-white.border.border-gray-300.rounded-lg(type="text", maxlength="1", onkeyup="focusNextInput(this, \'code-3\', \'code-5\')", required)
+    div
+      input#code-5.block.w-9.h-9.py-3.text-sm.font-extrabold.text-center.text-gray-900.bg-white.border.border-gray-300.rounded-lg(type="text", maxlength="1", onkeyup="focusNextInput(this, \'code-4\', \'code-6\')", required)
+    div
+      input#code-6.block.w-9.h-9.py-3.text-sm.font-extrabold.text-center.text-gray-900.bg-white.border.border-gray-300.rounded-lg(class="focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-whit .dark:focus:ring-primary-500 dark:focus:border-primary-500" type="text" maxlength="1" onkeyup="focusNextInput(this, \'code-5\', \'code-6\')", required)
+  p#helper-text-explanation.mt-2.text-sm.text-gray-500(class="dark:text-gray-400") Please introduce the 6 digit code we sent via email.

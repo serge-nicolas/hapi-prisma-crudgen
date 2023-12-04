@@ -1,0 +1,9 @@
+byRoute:
+  login:
+    email: asRequiredEmail
+  upload:
+    id: asRequiredObjectId
+  graphql:
+    email: asRequiredEmail
+  findOne:
+    id: asRequiredObjectId

@@ -1,0 +1,14 @@
+{
+    "watch": [
+        "lib",
+        "./dist/output.css",
+        "compiled-schema.prisma"
+    ],
+    "ext": "ts,pug,js",
+    "exec": "ts-node --esm sample.ts",
+    "ignore": [
+        ".git",
+        "node_modules/**/node_modules",
+        "lib/server/test"
+    ]
+}

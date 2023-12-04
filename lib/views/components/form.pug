@@ -1,0 +1,48 @@
+div(class="block p-6 border border-gray-200 rounded-lg").form__container
+    div(class="text-base font-semibold leading-5 text-gray-100").form__title {{ itemData.name }}
+    hr.mb-8
+    form.form__main(method="POST" enctype="multipart/form-data")
+        .form-body.col-span-3
+        .form-side.border-l-4.p-4
+            .form-alert
+            .item-details
+                div= "id: " + itemData.id
+                div= "created: " + itemData.createdAt
+                div= "updated: " + itemData.updatedAt
+                div(id="changedData")
+
+            hr.mb-4
+            button(type="submit" class="btn-primary") Save
+            button(class="btn-secondary") Reset
+
+        template.form-field-template(data-for="String")
+            div.mb-4
+                label.form__elt-label {{ name }}
+                input.form__elt-input(ref="{{ name }}" id="{{ name }}" type="text")
+
+        template.form-field-template(data-for="Boolean")
+            div.mb-4
+                input.form__elt-boolean(ref="{{ name }}" type="checkbox" value="")
+                label.form__elt-label {{ name }}
+                           
+        template.form-field-template(data-for="Select")
+            div.mb-4
+                label.form__elt-label {{ name }}
+                select.form__elt-select(ref="{{ name }}")
+
+    script(defer).
+        window.addEventListener("DOMContentLoaded", function() {
+            window.APP.listener.addEventListener("routeChange", function(data) {
+                window.APP.formRenderer.buildForm(
+                    ".form__main",
+                    window.APP.currentRoute,
+                    "template.form-field-template",
+                    !{JSON.stringify(itemData)},
+                    function() {
+                        document
+                            .querySelector(".form-container")
+                            .classList.replace("hidden", "block");
+                    }
+                );
+            });
+        });

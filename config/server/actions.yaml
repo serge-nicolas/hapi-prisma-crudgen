@@ -1,0 +1,42 @@
+prisma:
+  actions:
+    - action: findMany
+      method: GET
+      validation:
+        require:
+          - where
+      options:
+        auth: true
+      controler: default
+      hooks: null
+    - action: findUnique
+      method: GET
+      validation:
+        require:
+          - id
+        disallow:
+          - where
+      options:
+        auth: true
+      controler: default
+      hooks: null
+    - action: create
+      method: POST
+      validation:
+        require:
+          - id
+        type:
+          - id: 
+      options:
+        auth: true
+      controler: default
+      hooks: null
+    - action: delete
+      method: DELETE
+      validation:
+        require:
+          - id
+      options:
+        auth: true
+      controler: default
+      hooks: null
