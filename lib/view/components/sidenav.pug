@@ -6,7 +6,8 @@ div#main-nav
             each menuElt in JSON.parse(meta.sideMenu)
                 div.sidenav-item 
                     div.w-48=menuElt
-                    a(href=`#model=${menuElt}&action=NEW` class="sidenav-item-link")
+                    a(href=`/admin/${menuElt}/list` class="sidenav-item-link")
                         div add
                     div &nbsp;
-                    button(class="sidenav-item-link" onclick="window.location.href='#model="+ menuElt +"&action=findMany'") view
+                    a(href=`/admin/${menuElt}/edit` class="sidenav-item-link")
+                        div view

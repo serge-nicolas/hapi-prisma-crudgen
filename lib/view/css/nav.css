@@ -19,3 +19,6 @@ button.btn-primary {
 button.btn-secondary {
   @apply bg-transparent focus:outline-none rounded-lg px-6 ml-4 py-2 text-blue-500 font-semibold shadow;
 }
+.sidebar {
+  @apply fixed top-20 right-0 z-40 h-screen
+}

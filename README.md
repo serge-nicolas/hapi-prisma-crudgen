@@ -75,3 +75,7 @@ The front applicatino is here for demonstration purpose, it will be later build 
 KeytoneJS and AdminJS
 
 https://github.com/Murked/vue-tailwind-admin
+
+# To read
+
+https://web.dev/articles/passkey-registration?hl=fr

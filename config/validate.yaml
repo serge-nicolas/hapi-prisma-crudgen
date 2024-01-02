@@ -7,3 +7,11 @@ byRoute:
     email: asRequiredEmail
   findOne:
     id: asRequiredObjectId
+byModel:
+  user:
+    email: asRequiredEmail
+    role: from$Role
+payload:
+  maxBytes: 209715200,
+  output: file,
+  parse: true

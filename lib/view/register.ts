@@ -17,16 +17,17 @@ const initPugAdmin = async (server: Hapi.Server, overrides: any) => {
   await server.register(Vision);
   server.views(overrides.views);
   const logger = server.app.logger;
+  const path: string = `${overrides.root}/{params*}`;
   server.route({
     method: "GET",
-    path: "/admin/{param*}",
+    path,
     options: {
       handler: async (req, h) => {
         let params: Array<string> = [];
         // DOC parse req params to find page, id...
-        if (req.params.param.includes("/"))
-          params = req.params.param.split("/");
-
+        console.log(req.params);
+        if (req.params.includes("/")) params = req.params.split("/");
+        console.log(params);
         const metaResponse: Hapi.ServerInjectResponse = await server.inject({
           method: "GET",
           url: "/meta",
@@ -40,7 +41,7 @@ const initPugAdmin = async (server: Hapi.Server, overrides: any) => {
           }
 
           const { res, payload } = await Wreck.get(
-            `http://localhost:3002/api/${params[0].toLowerCase()}/${
+            `${process.env.API}${params[0].toLowerCase()}/${
               params[1]
             }?where={"id":"${params[2]}"}`
           );
@@ -53,7 +54,7 @@ const initPugAdmin = async (server: Hapi.Server, overrides: any) => {
           action: req.params[1] || null,
           id: req.params[2] || null,
           page,
-          itemData
+          itemData,
         });
       },
     },
@@ -62,7 +63,7 @@ const initPugAdmin = async (server: Hapi.Server, overrides: any) => {
   await server.register(Inert);
   server.route({
     method: "GET",
-    path: `/assets/{param*}`, 
+    path: `/assets/{param*}`,
     handler: {
       directory: {
         path: pathJoin(__dirname, "..", "..", "dist", "assets"),

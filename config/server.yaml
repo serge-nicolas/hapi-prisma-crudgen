@@ -6,11 +6,14 @@ client: useExternal
 
 auth: passworlesswithemail
 
+modules: 
+  - taskManager
 
 imports:
   - { resource: ./config/server/actions.yaml }
   - { resource: ./config/server/routes.yaml }
   - { resource: ./config/server/auth.yaml }
+  - { resource: ./config/server/path.yaml }
 
 redirect:
   login:

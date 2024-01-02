@@ -7,7 +7,7 @@ import HapiPrismaCrud from "./lib/server/index";
 import translate from "./lib/server/plugins/translate";
 import logger from "./lib/server/plugins/logger";
 
-const viewsPath = pathJoin(__dirname, "lib/views/");
+const viewsPath = pathJoin(__dirname, "lib/view/");
 
 const init = async () => {
   const server = Hapi.server({
@@ -35,6 +35,7 @@ const init = async () => {
       configFileServer: "server",
       configFolder: "./config/",
       overrides: {
+        root: "/admin",
         views: {
           engines: { pug: Pug },
           layoutPath: `${viewsPath}/layout`,
@@ -51,7 +52,6 @@ const init = async () => {
   });
 
   await server.start();
-
   return server;
 };
 

@@ -5,7 +5,7 @@
         "compiled-schema.prisma"
     ],
     "ext": "ts,pug,js",
-    "exec": "ts-node --esm sample.ts",
+    "exec": "tsx sample.ts",
     "ignore": [
         ".git",
         "node_modules/**/node_modules",

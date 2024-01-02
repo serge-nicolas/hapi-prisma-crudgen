@@ -1,5 +1,4 @@
 import { PrismaClient, $Enums } from "@prisma/client";
-
 import Hapi from "@hapi/hapi";
 import type { Logger } from "winston";
 import createPluginForModel from "../controlers/createPluginForModel";
@@ -39,8 +38,10 @@ const prismaPlugin = (logger: Logger, overrides: any): HapiPlugin => {
       });
       //DOC register prismaClient to Hapi
       server.app.prisma = prismaClient;
-
+      
       //DOC build, DMMF. dataModel not accessible
+      //DOC can't use  ModelName  from "@prisma/client" : need more info than a simple list
+    
       const DMMFModels: Array<DmmfModel> = Object.keys(prismaClient)
         .filter((key: string) => !key.includes("_") && !key.includes("$"))
         .map((model: any) => {
@@ -94,7 +95,7 @@ const prismaPlugin = (logger: Logger, overrides: any): HapiPlugin => {
       server.ext({
         type: "onRequest",
         method: function (request: Hapi.Request, h: Hapi.ResponseToolkit) {
-          logger.debug(request.path);
+          logger.debug(request.method.toUpperCase() + "  " + request.path);
           return h.continue;
         },
       });

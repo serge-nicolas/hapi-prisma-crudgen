@@ -20,8 +20,8 @@ body::-webkit-scrollbar {
 }
 
 body {
-  @apply grid min-h-full leading-normal tracking-normal w-full place-items-center dark:bg-slate-800;
+  @apply grid min-h-full leading-normal tracking-normal w-full place-items-center;
 }
 main {
-  @apply grid place-items-center drop-shadow-xl w-4/5 bg-slate-900;
+  @apply grid place-items-center drop-shadow-xl w-4/5;
 }

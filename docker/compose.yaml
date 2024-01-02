@@ -9,7 +9,7 @@ services:
     ports:
       - '6379:6379'
     volumes:
-      - ./db/redis:/bitnami/redis/data
+      - /var/local/docker-volumes/redis:/bitnami/redis/data
     network_mode: host
     restart: unless-stopped
   redis-insight:
@@ -17,7 +17,7 @@ services:
     ports: 
       - "8001:8001"
     volumes:
-      - ./db/redisinsight:/db
+      - /var/local/docker-volumes/redis-insight:/db
     restart: unless-stopped
   bullboard:
     container_name: bullboard
@@ -25,3 +25,14 @@ services:
     restart: unless-stopped
     ports:
       - 3000:3000
+  mongodb:
+    profiles:
+      - db
+    image: mongodb/mongodb-community-server
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    ports:
+      - 27017:27017
+    volumes:
+      - /var/local/docker-volumes/mongo:/data/db

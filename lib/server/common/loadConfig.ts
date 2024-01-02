@@ -35,7 +35,6 @@ class LoadConfig {
         throw error;
       }
     }
-
     return this;
   }
 }

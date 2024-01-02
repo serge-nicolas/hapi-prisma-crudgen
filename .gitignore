@@ -10,3 +10,4 @@ dist/assets/*
 .yarn/install-state.gz
 .pnp.*
 schema/*
+trash/*

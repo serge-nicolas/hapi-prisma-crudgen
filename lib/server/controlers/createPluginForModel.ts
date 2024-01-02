@@ -1,21 +1,22 @@
 /**
  * implement crud handlers/routes
  */
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 
 import type Hapi from "@hapi/hapi";
-import { PrismaClient } from "@prisma/client";
 import Boom from "@hapi/boom";
+import { PrismaClient } from "@prisma/client";
+
 import type { PrismaActionMethod, HapiDefinedRoute } from "../typings/server";
 
 import configure from "../common/loadConfig";
-const config = { ...configure("server"), ...configure("validate") };
-
 import routeHandlers from "../routes/index";
-
 import validateFieldsForRoute from "../validation/fields";
+import { ReqRefDefaults, ServerRoute } from "@hapi/hapi";
+import { notEmpty } from "../common/helpers/cleaners.ts";
 
-import { pathConverter, pathBuilder } from "../common/handlerPathConverter";
-
+const config = { ...configure("server"), ...configure("validate") };
 type ObjectKey = keyof typeof routeHandlers;
 
 const prismaClient: PrismaClient = new PrismaClient({
@@ -25,59 +26,98 @@ const prismaClient: PrismaClient = new PrismaClient({
  * handle prisma crud routes
  * @param route
  */
-const createRoute = (route: PrismaActionMethod): HapiDefinedRoute => {
-  return {
-    path: route.action,
-    method: route.method,
-    options: {
-      auth: route.options.auth,
-      validate: {
-        payload: config.validate.byRoute[route.action]
-          ? validateFieldsForRoute(config.validate.byRoute[route.action])
-          : {},
-      },
-    },
-    handler: async (
-      name: string,
-      request: Hapi.Request,
-      h: Hapi.ResponseToolkit,
-      prisma: PrismaClient
-    ) => {
+const createRoute = async (
+  route: PrismaActionMethod,
+  resourceName: string,
+  prismaClient: PrismaClient
+): Promise<HapiDefinedRoute | null> => {
+  let path: string = route.action;
+  switch (route.method) {
+    case "PATCH":
+    case "DELETE":
+      path = `${route.action}/{id}`;
+      break;
+  }
+  // DOC find key in prisma no matter the case
+  const _resourceName: any = Object.keys(prismaClient).find((k: string) =>
+    k ? k.toLowerCase() === resourceName.toLowerCase() : k
+  );
+  let resource: any | null = {};
+  const resourcePath: string = resolve(
+    `./${config.server.path.resources}/${_resourceName}.handler.ts`
+  );
 
-      // DOC find key in prisma no matter the case
-      const resource: any = Object.keys(prisma).find((k: string) =>
-        k ? k.toLowerCase() === name.toLowerCase() : k
-      );
-      console.log(Object.keys(prisma[resource]));
-      try {
-        //DOC default to route if no controler defined for this route
-        const handler: Function = (
-          await import(
-            `../routes/crud/${pathBuilder(
-              request.route.method,
-              name,
-              route.controler || route.action,
-              true
-            )}.handler`
-          )
-        ).default;
-        const response = await handler(resource, route, request, prisma);
-        return h.response(response).code(200);
-      } catch (e) {
-        return Boom.resourceGone(`${resource} ${route.action}: ${e.message}`);
-      }
-    },
-  };
+  if (existsSync(resourcePath)) {
+    resource = (await import(resourcePath)).init(
+      _resourceName,
+      prismaClient,
+      route.action
+    );
+  } else {
+    resource = (await import(`../models/resource.handler.default.ts`)).init(
+      _resourceName,
+      prismaClient,
+      route.action
+    );
+  }
+  if (resource) {
+    const definedRoute: HapiDefinedRoute = {
+      path,
+      method: route.method,
+      options: {
+        auth: route.options.auth,
+        validate: {
+          payload: config.validate.byRoute[route.action]
+            ? validateFieldsForRoute(config.validate.byRoute[route.action])
+            : {},
+        },
+      },
+      handler: async (
+        name: string,
+        request: Hapi.Request,
+        h: Hapi.ResponseToolkit
+      ) => {
+        try {
+          //DOC default to route if no controler defined for this route
+          const handler: Function = (
+            _resource: {
+              buildQuery: (arg0: any) => {
+                (): any;
+                new (): any;
+                execute: { (): any; new (): any };
+              };
+            },
+            _request: Hapi.Request<Hapi.ReqRefDefaults>
+          ) => _resource.buildQuery(_request).execute();
+
+          const response = await handler(resource, request);
+
+          return h.response(response).code(200);
+        } catch (e) {
+          console.error(e);
+          return Boom.resourceGone(
+            `${resourceName} ${route.action}: ${e.message}`
+          );
+        }
+      },
+    };
+
+    return definedRoute;
+  }
+  return null;
 };
 
-const createRoutes = (route: any): Array<HapiDefinedRoute> => {
+const createRoutes = (
+  name: string,
+  prismaClient: PrismaClient
+): Promise<Array<HapiDefinedRoute | null>> => {
   const routes: Array<PrismaActionMethod> = config.server.prisma.actions;
 
-  let genericRoutes: Array<HapiDefinedRoute> = [];
+  let genericRoutes: Array<Promise<HapiDefinedRoute | null>> = [];
   routes.forEach((_route: PrismaActionMethod) => {
-    genericRoutes.push(createRoute(_route));
+    genericRoutes.push(createRoute(_route, name, prismaClient));
   });
-  return genericRoutes;
+  return Promise.all(genericRoutes);
 };
 
 const createFullPathForRoute = (route: any): string => {
@@ -94,15 +134,25 @@ const init = (name: string): Hapi.Plugin<null> => {
     name: "app/api/" + name,
     dependencies: ["prisma"],
     register: async function (server: Hapi.Server) {
-      const routes: Array<any> = createRoutes(name);
-      server.route(
-        routes.map((route) => ({
-          method: route.method,
-          path: createFullPathForRoute({ path: route.path, name }),
-          handler: (request: Hapi.Request, h: Hapi.ResponseToolkit) =>
-            route.handler(name, request, h, prismaClient),
-        }))
+      const routes: Array<HapiDefinedRoute | null> = await createRoutes(
+        name,
+        prismaClient
       );
+      // BUG ts return null
+      const routeList:Array<ServerRoute<ReqRefDefaults>> = routes
+        .filter(notEmpty)
+        .map((route):ServerRoute<ReqRefDefaults> | undefined => {
+          if (route)
+            return {
+              method: route.method,
+              path: createFullPathForRoute({ path: route.path, name }),
+              handler: (request: Hapi.Request, h: Hapi.ResponseToolkit) =>
+                route.handler(name, request, h),
+            } as ServerRoute<ReqRefDefaults>;
+          return undefined;
+        })
+        .filter(notEmpty)
+      server.route(routeList);
     },
   };
 };

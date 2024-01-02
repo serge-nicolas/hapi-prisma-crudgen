@@ -15,7 +15,7 @@ import logger from "./common/logger";
 import configure from "./common/loadConfig";
 import routeHandlers from "./routes";
 
-import initPugAdmin from "../views/register";
+import initPugAdmin from "../view/register";
 
 class AdminServer {
   config: any;
@@ -105,7 +105,7 @@ class AdminServer {
         method: "GET",
         path: "/",
         handler: (request, h) =>
-          rootViewHandler(request, h, this.config.server.client.path),
+          rootViewHandler(h, this.config.server.client.path),
       });
     }
     return;

@@ -1,7 +1,6 @@
 import type Hapi from "@hapi/hapi";
 
 const rootViewHandler = (
-  request: Hapi.Request,
   h: Hapi.ResponseToolkit,
   path: string
 ) => {

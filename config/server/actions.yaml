@@ -20,7 +20,7 @@ prisma:
         auth: true
       controler: default
       hooks: null
-    - action: create
+    - action: graphql
       method: POST
       validation:
         require:
@@ -33,6 +33,26 @@ prisma:
       hooks: null
     - action: delete
       method: DELETE
+      validation:
+        require:
+          - id
+      options:
+        auth: true
+      controler: default
+      hooks: null
+    - action: update
+      alias: update
+      method: PATCH
+      validation:
+        require:
+          - id
+      options:
+        auth: true
+      controler: default
+      hooks: null
+    - action: create
+      alias: create
+      method: PUT
       validation:
         require:
           - id
