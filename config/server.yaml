@@ -2,6 +2,11 @@ protectedFields:
   - passphrase
   - password
 
+autoFields:
+  - createdAt
+  - updatedAt
+  - id
+
 client: useExternal
 
 auth: passworlesswithemail
@@ -14,8 +19,17 @@ imports:
   - { resource: ./config/server/routes.yaml }
   - { resource: ./config/server/auth.yaml }
   - { resource: ./config/server/path.yaml }
+  - { resource: ./config/server/view.yaml }
 
-redirect:
-  login:
-    success: "/"
-    failed: "/login"
+path:  
+  admin: 
+    target: "/admin"
+    redirect: true
+  assets: 
+    target: "/assets"
+    redirect: true
+    folder: "dist/assets"
+  lib: 
+    target: "/lib"
+    redirect: true
+    folder: "lib"

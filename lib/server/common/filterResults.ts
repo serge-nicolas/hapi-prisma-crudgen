@@ -1,10 +1,10 @@
 // CONFIG 
 
 const excludeFieldsForResult = (items: Array<any>, valuesToHideForResponse:Array<string> = ["password", "passphrase"]): Array<any> => {
-  // DOC create specific type for this response
+  // FEATURE create specific type for this response
   type ItemResponseKeys = keyof (typeof items)[0];
 
-  // DOC remove data values if hidden (like password fields)
+  // FEATURE remove data values if hidden (like password fields)
   items = items.map((item: ItemResponseKeys) => {
     const obj: any = {};
     Object.keys(item).forEach((itemKey: any, index: number) => {

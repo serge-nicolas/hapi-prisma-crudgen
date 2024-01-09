@@ -1,5 +1,5 @@
 /**
-
+*  TO REMOVE
  * @returns
  */
 
@@ -31,7 +31,7 @@ const excludeFieldsForResultPlugin = (): any => {
         if (response.isBoom) {
           return null;
         }
-        // DOC exclude not items data files etc.
+        // FEATURE exclude not items data files etc.
         if (response.source && !response.source.context?.itemData) {
           const sourceItemData: Array<any> = response.source;
 

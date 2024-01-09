@@ -77,5 +77,7 @@ KeytoneJS and AdminJS
 https://github.com/Murked/vue-tailwind-admin
 
 # To read
-
 https://web.dev/articles/passkey-registration?hl=fr
+
+# CSS
+https://flowbite.com/docs/components

@@ -14,8 +14,9 @@ block dashboard
             include ./components/topnav
             include ./components/breadcrumb
             div.text-gray-700.px-8.grow(role="app-container")
-                .child-container.table-container
+                .child-container.route-list.hidden
                     include ./components/table
-                .child-container.form-container
+                .child-container.route-edit.hidden
                     include ./components/form
-                    pre= JSON.stringify(itemData, null, 4)
+                    if itemData && debug
+                        pre.m-2.p-2.border= JSON.stringify(itemData, null, 4)

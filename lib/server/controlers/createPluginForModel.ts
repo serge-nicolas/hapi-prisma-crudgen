@@ -32,13 +32,14 @@ const createRoute = async (
   prismaClient: PrismaClient
 ): Promise<HapiDefinedRoute | null> => {
   let path: string = route.action;
+  
   switch (route.method) {
     case "PATCH":
     case "DELETE":
       path = `${route.action}/{id}`;
       break;
   }
-  // DOC find key in prisma no matter the case
+  // FEATURE find key in prisma no matter the case
   const _resourceName: any = Object.keys(prismaClient).find((k: string) =>
     k ? k.toLowerCase() === resourceName.toLowerCase() : k
   );
@@ -94,10 +95,10 @@ const createRoute = async (
 
           return h.response(response).code(200);
         } catch (e) {
-          console.error(e);
-          return Boom.resourceGone(
+          throw new Error(e);
+          /* return Boom.resourceGone(
             `${resourceName} ${route.action}: ${e.message}`
-          );
+          ); */
         }
       },
     };

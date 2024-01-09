@@ -1,7 +1,7 @@
 const removeEmptyOrUndefinedValueFromObject = (obj: any): any => {
   type ObjKey = keyof typeof obj;
 
-  // DOC remove item if null or undefined value
+  // FEATURE remove item if null or undefined value
   (Object.keys(obj) as ObjKey[]).forEach((key: string) => {
     if (obj[key as ObjKey] === null || obj[key as ObjKey] === undefined) {
       delete obj[key as ObjKey];
@@ -13,7 +13,7 @@ const removeEmptyOrUndefinedValueFromObject = (obj: any): any => {
 const removeEmptyObjectForPrismaQuery = (prismaQuery: any): any => {
   type PrismaQueryKey = keyof typeof prismaQuery;
 
-  // DOC remove property if null (needed for prisma, select and where can't be null)
+  // FEATURE remove property if null (needed for prisma, select and where can't be null)
   (Object.keys(prismaQuery) as PrismaQueryKey[]).forEach(
     (key: PrismaQueryKey) => {
       if (prismaQuery[key]) {

@@ -3,11 +3,14 @@ div#main-nav
         p.pl-4 Admin
     .mb-4.px-4
         p.pl-4.text-sm.font-semibold.mb-1.text-lg Items
-            each menuElt in JSON.parse(meta.sideMenu)
-                div.sidenav-item 
-                    div.w-48=menuElt
-                    a(href=`/admin/${menuElt}/list` class="sidenav-item-link")
-                        div add
-                    div &nbsp;
-                    a(href=`/admin/${menuElt}/edit` class="sidenav-item-link")
-                        div view
+            if(meta.statusCode !== 404)
+                each menuElt in JSON.parse(meta.sideMenu)
+                    div.sidenav-item 
+                        div.w-48=menuElt
+                        a(href=`/admin/${menuElt}/edit` class="sidenav-item-link")
+                            div add
+                        div &nbsp;
+                        a(href=`/admin/${menuElt}/list` class="sidenav-item-link")
+                            div list
+            else
+                .alert.danger Meta not loaded

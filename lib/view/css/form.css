@@ -20,3 +20,6 @@ input[type="search"] {
 input[type="submit"] {
   @apply text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800;
 }
+.form__main-header {
+  @apply text-base font-semibold leading-5 text-gray-900 uppercase tracking-wider
+}

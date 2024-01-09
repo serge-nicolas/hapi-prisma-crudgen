@@ -23,8 +23,12 @@ interface HapiPlugin {
   prisma: Hapi.Plugin<null>;
 }
 
-// DOC instantiate Prisma Client
-const prismaPlugin = (logger: Logger, overrides: any): HapiPlugin => {
+// FEATURE instantiate Prisma Client
+const prismaPlugin = (
+  logger: Logger,
+  overrides: any,
+  config: any
+): HapiPlugin => {
   const prismaPlugin: Hapi.Plugin<null> = {
     name: "prisma",
     dependencies: ["logger-middleware", "i18n-middleware"],
@@ -38,27 +42,42 @@ const prismaPlugin = (logger: Logger, overrides: any): HapiPlugin => {
       });
       //DOC register prismaClient to Hapi
       server.app.prisma = prismaClient;
-      
+      console.log("config.server", config.server.display.table.fieldsByModel);
+
       //DOC build, DMMF. dataModel not accessible
       //DOC can't use  ModelName  from "@prisma/client" : need more info than a simple list
-    
+
       const DMMFModels: Array<DmmfModel> = Object.keys(prismaClient)
-        .filter((key: string) => !key.includes("_") && !key.includes("$"))
+        .filter((key: string) => !key.includes("_") && !key.includes("$")) // remove non model keys from prisma DMMF
         .map((model: any) => {
           const modelData = prismaClient[model] as any;
           return {
             name: modelData.$name,
             // not working now? need prisma update, here for next evolution
-            fields: modelData.fields,
+            fields: Object.keys(modelData.fields).map((field) => ({
+              ...modelData.fields[field],
+              isReadonly: modelData.fields[field].name === "id" ? true : false,
+              shouldHide: config.server.autoFields.includes(
+                modelData.fields[field].name
+              ),
+            })),
             dbName: modelData.dbName,
             primaryKey: modelData.primaryKey,
             uniqueFields: modelData.uniqueFields,
             uniqueIndexes: modelData.uniqueIndexes,
             isGenerated: modelData.isGenerated,
+            view: {
+              tableFields: config.server.display.table.fieldsByModel[
+                modelData.$name
+              ]
+                ? config.server.display.table.fieldsByModel[modelData.$name]
+                    .cols
+                : null,
+            },
           };
         });
 
-      // DOC get actions from prisma
+      // FEATURE get actions from prisma
       if (!!!DMMFModels) {
         logger.error("dmmf not defined // prisma model not loaded");
         throw Error("dmmf not defined // prisma model not loaded");
@@ -67,13 +86,23 @@ const prismaPlugin = (logger: Logger, overrides: any): HapiPlugin => {
       //DOC add route meta to return full model
       server.route({
         method: "GET",
-        path: "/meta",
+        path: config.server.path.admin.target + "/meta",
         handler: (request: Hapi.Request, h: Hapi.ResponseToolkit) => ({
           $models: DMMFModels,
           $enums: $Enums,
           sideMenu: JSON.stringify(DMMFModels.map((obj: any) => obj.name)),
         }),
       });
+
+      if (config.server.path.admin.redirect) {
+        server.route({
+          method: "GET",
+          path: "/",
+          handler: (_, h) => {
+            return h.redirect(config.server.path.admin.target).code(307);
+          },
+        });
+      }
 
       //DOC init each model as plugin
       await Promise.all(

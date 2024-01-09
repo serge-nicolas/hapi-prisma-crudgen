@@ -1829,6 +1829,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"as-table@npm:^1.0.36":
+  version: 1.0.55
+  resolution: "as-table@npm:1.0.55"
+  dependencies:
+    printable-characters: "npm:^1.0.42"
+  checksum: 8c5693a84621fe53c62fcad6b779dc55c5caf4d43b8e67077964baea4a337769ef53f590d7395c806805b4ef1a391b614ba9acdee19b2ca4309ddedaf13894e6
+  languageName: node
+  linkType: hard
+
 "asap@npm:~2.0.3":
   version: 2.0.6
   resolution: "asap@npm:2.0.6"
@@ -2337,6 +2346,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "cookie@npm:0.3.1"
+  checksum: 0d73c4d605b234c4d04de335aefa4988157f03265845f4a89ea311e3ba1ce73ab42b52d33652ed1c9671342eb77742a58f61753f3e90f31711284fb6031b2962
+  languageName: node
+  linkType: hard
+
+"cookie@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "cookie@npm:0.5.0"
+  checksum: c01ca3ef8d7b8187bae434434582288681273b5a9ed27521d4d7f9f7928fe0c920df0decd9f9d3bbd2d14ac432b8c8cf42b98b3bdd5bfe0e6edddeebebe8b61d
+  languageName: node
+  linkType: hard
+
 "cookie@npm:^0.6.0":
   version: 0.6.0
   resolution: "cookie@npm:0.6.0"
@@ -2385,6 +2408,13 @@ __metadata:
   bin:
     cssesc: bin/cssesc
   checksum: 6bcfd898662671be15ae7827120472c5667afb3d7429f1f917737f3bf84c4176003228131b643ae74543f17a394446247df090c597bb9a728cce298606ed0aa7
+  languageName: node
+  linkType: hard
+
+"data-uri-to-buffer@npm:^2.0.0":
+  version: 2.0.2
+  resolution: "data-uri-to-buffer@npm:2.0.2"
+  checksum: 341b6191ed65fa453e97a6d44db06082121ebc2ef3e6e096dfb6a1ebbc75e8be39d4199a5b4dba0f0efc43f2a3b2bcc276d85cf1407eba880eb09ebf17c3c31e
   languageName: node
   linkType: hard
 
@@ -2938,6 +2968,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"get-source@npm:^2.0.12":
+  version: 2.0.12
+  resolution: "get-source@npm:2.0.12"
+  dependencies:
+    data-uri-to-buffer: "npm:^2.0.0"
+    source-map: "npm:^0.6.1"
+  checksum: b1db46d28902344fd9407e1f0ed0b8f3a85cb4650f85ba8cee9c0b422fc75118172f12f735706e2c6e034617b13a2fbc5266e7fab617ecb184f0cee074b9dd3e
+  languageName: node
+  linkType: hard
+
 "get-stream@npm:^6.0.0":
   version: 6.0.1
   resolution: "get-stream@npm:6.0.1"
@@ -3049,6 +3089,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hapi-dev-errors@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "hapi-dev-errors@npm:4.0.0"
+  dependencies:
+    youch: "npm:~2.0.10"
+    youch-terminal: "npm:~1.0.0"
+  checksum: afed89bfa06184ba116f14bea9b85b5432c0314b09cb281bc651264d5ee1dcc94920326045aab811d035a871c6f89b54ee619a58e8a1e91f258745e1c084ccdc
+  languageName: node
+  linkType: hard
+
 "hapi-prisma-crud@workspace:.":
   version: 0.0.0-use.local
   resolution: "hapi-prisma-crud@workspace:."
@@ -3071,11 +3121,13 @@ __metadata:
     dotenv: "npm:^16.3.1"
     glob: "npm:^10.3.10"
     hapi-auth-jwt2: "npm:^10.4.0"
+    hapi-dev-errors: "npm:^4.0.0"
     i18next: "npm:^23.7.6"
     i18next-http-middleware: "npm:^3.5.0"
     jest: "npm:^29.7.0"
     joi: "npm:^17.11.0"
     nodemon: "npm:^3.0.1"
+    path-to-regexp: "npm:^6.2.1"
     postcss: "npm:^8.4.32"
     postcss-import: "npm:^15.1.0"
     prisma: "npm:^5.7.1"
@@ -3090,6 +3142,8 @@ __metadata:
     winston: "npm:^3.11.0"
     yaml-with-import: "npm:^1.0.6"
     yamljs: "npm:^0.3.0"
+    youch: "npm:^3.3.3"
+    youch-terminal: "npm:^2.2.3"
   languageName: unknown
   linkType: soft
 
@@ -4048,6 +4102,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"kleur@npm:^4.1.3, kleur@npm:^4.1.5":
+  version: 4.1.5
+  resolution: "kleur@npm:4.1.5"
+  checksum: e9de6cb49657b6fa70ba2d1448fd3d691a5c4370d8f7bbf1c2f64c24d461270f2117e1b0afe8cb3114f13bbd8e51de158c2a224953960331904e636a5e4c0f2a
+  languageName: node
+  linkType: hard
+
 "kuler@npm:^2.0.0":
   version: 2.0.0
   resolution: "kuler@npm:2.0.0"
@@ -4424,6 +4485,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mustache@npm:^3.0.0":
+  version: 3.2.1
+  resolution: "mustache@npm:3.2.1"
+  bin:
+    mustache: bin/mustache
+  checksum: a6d173abb4b95e30acc413327f17bf59577d6d634df03247fc24454a5f08daa35e3a14ffe7be11e484b9ccaaf496bd45f3e6f11dc4ef38e6ab3fa7b25f2f8a7d
+  languageName: node
+  linkType: hard
+
+"mustache@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "mustache@npm:4.2.0"
+  bin:
+    mustache: bin/mustache
+  checksum: 1f8197e8a19e63645a786581d58c41df7853da26702dbc005193e2437c98ca49b255345c173d50c08fe4b4dbb363e53cb655ecc570791f8deb09887248dd34a2
+  languageName: node
+  linkType: hard
+
 "mz@npm:^2.7.0":
   version: 2.7.0
   resolution: "mz@npm:2.7.0"
@@ -4684,6 +4763,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"path-to-regexp@npm:^6.2.1":
+  version: 6.2.1
+  resolution: "path-to-regexp@npm:6.2.1"
+  checksum: 7a73811ca703e5c199e5b50b9649ab8f6f7b458a37f7dff9ea338815203f5b1f95fe8cb24d4fdfe2eab5d67ce43562d92534330babca35cdf3231f966adb9360
+  languageName: node
+  linkType: hard
+
 "path@npm:^0.12.7":
   version: 0.12.7
   resolution: "path@npm:0.12.7"
@@ -4820,6 +4906,13 @@ __metadata:
     ansi-styles: "npm:^5.0.0"
     react-is: "npm:^18.0.0"
   checksum: edc5ff89f51916f036c62ed433506b55446ff739358de77207e63e88a28ca2894caac6e73dcb68166a606e51c8087d32d400473e6a9fdd2dbe743f46c9c0276f
+  languageName: node
+  linkType: hard
+
+"printable-characters@npm:^1.0.42":
+  version: 1.0.42
+  resolution: "printable-characters@npm:1.0.42"
+  checksum: 7c94d94c6041a37c385af770c7402ad5a2e8a3429ca4d2505a9f19fde39bac9a8fd1edfbfa02f1eae5b4b0f3536b6b8ee6c84621f7c0fcb41476b2df6ee20e4b
   languageName: node
   linkType: hard
 
@@ -5376,7 +5469,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stack-trace@npm:0.0.x":
+"stack-trace@npm:0.0.10, stack-trace@npm:0.0.x":
   version: 0.0.10
   resolution: "stack-trace@npm:0.0.10"
   checksum: 9ff3dabfad4049b635a85456f927a075c9d0c210e3ea336412d18220b2a86cbb9b13ec46d6c37b70a302a4ea4d49e30e5d4944dd60ae784073f1cde778ac8f4b
@@ -5389,6 +5482,16 @@ __metadata:
   dependencies:
     escape-string-regexp: "npm:^2.0.0"
   checksum: 651c9f87667e077584bbe848acaecc6049bc71979f1e9a46c7b920cad4431c388df0f51b8ad7cfd6eed3db97a2878d0fc8b3122979439ea8bac29c61c95eec8a
+  languageName: node
+  linkType: hard
+
+"stacktracey@npm:^2.1.8":
+  version: 2.1.8
+  resolution: "stacktracey@npm:2.1.8"
+  dependencies:
+    as-table: "npm:^1.0.36"
+    get-source: "npm:^2.0.12"
+  checksum: e17357d0a532d303138899b910ab660572009a1f4cde1cbf73b99416957a2378e6e1c791b3c31b043cf7c5f37647da1dd114e66c9203f23c65b34f783665405b
   languageName: node
   linkType: hard
 
@@ -6014,6 +6117,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"wordwrap@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "wordwrap@npm:1.0.0"
+  checksum: 7ed2e44f3c33c5c3e3771134d2b0aee4314c9e49c749e37f464bf69f2bcdf0cbf9419ca638098e2717cff4875c47f56a007532f6111c3319f557a2ca91278e92
+  languageName: node
+  linkType: hard
+
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0, wrap-ansi@npm:^7.0.0":
   version: 7.0.0
   resolution: "wrap-ansi@npm:7.0.0"
@@ -6173,5 +6283,47 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: dceb44c28578b31641e13695d200d34ec4ab3966a5729814d5445b194933c096b7ced71494ce53a0e8820685d1d010df8b2422e5bf2cdea7e469d97ffbea306f
+  languageName: node
+  linkType: hard
+
+"youch-terminal@npm:^2.2.3":
+  version: 2.2.3
+  resolution: "youch-terminal@npm:2.2.3"
+  dependencies:
+    kleur: "npm:^4.1.5"
+    string-width: "npm:^4.2.3"
+    wordwrap: "npm:^1.0.0"
+  checksum: 32909575e2b5a58dff7f43f727c16f8203cee8671e8b25004cdc80453e9baf994e77450e3a0174ca98e87af085c815811cfa4db8cb02da352a77360c3eea7758
+  languageName: node
+  linkType: hard
+
+"youch-terminal@npm:~1.0.0":
+  version: 1.0.1
+  resolution: "youch-terminal@npm:1.0.1"
+  dependencies:
+    kleur: "npm:^4.1.3"
+  checksum: 5740ba593e568a425b632810e8b2f465c759ba5bc1de8097f7b9f2804076fd3cc63f4ee89c7f71c581c26acbdf4bd7866ce2db9c1fe6c4d7a0a834366be533cc
+  languageName: node
+  linkType: hard
+
+"youch@npm:^3.3.3":
+  version: 3.3.3
+  resolution: "youch@npm:3.3.3"
+  dependencies:
+    cookie: "npm:^0.5.0"
+    mustache: "npm:^4.2.0"
+    stacktracey: "npm:^2.1.8"
+  checksum: 6e5dd4be39ea737fb557fe0647855ce7f0e2182330342cc5e2315a688e0950683967abbc43dd6452b80f39271b14872c390a6e96009f2475905d6be824d38109
+  languageName: node
+  linkType: hard
+
+"youch@npm:~2.0.10":
+  version: 2.0.10
+  resolution: "youch@npm:2.0.10"
+  dependencies:
+    cookie: "npm:^0.3.1"
+    mustache: "npm:^3.0.0"
+    stack-trace: "npm:0.0.10"
+  checksum: db3e9e514f206908fe18af3bde82d3beb8fccb81ab3f7b561b7f227f174afe618a79955a707cb483d2fbc10b55dff3154db66e867944189d5122379e60c6ceb7
   languageName: node
   linkType: hard

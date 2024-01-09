@@ -1,5 +1,5 @@
 import { Server as HapiServer } from "@hapi/hapi";
-import Inert from "@hapi/inert"; // DOC needed for frontend
+import Inert from "@hapi/inert"; // FEATURE needed for frontend
 
 import prisma from "./plugins/prisma";
 import configAdminServer from "./plugins/configAdminServer";
@@ -60,7 +60,7 @@ class AdminServer {
   }
 
   async initPlugins() {
-    // DOC load hapi plugin defined by overrides
+    // FEATURE load hapi plugin defined by overrides
     let loadPluginPromises: Array<any> = [];
     if (this.HapiPlugins.length > 0) {
       this.HapiPlugins.forEach(async (plugin: any, index: number) => {
@@ -88,24 +88,33 @@ class AdminServer {
   async initCrud() {
     //DOC load routes for prisma CRUD
     const plugins = prisma(logger, {
-      overrides: this.overrides.prismaDefinitionFolder,
-    });
+      overrides: this.overrides.prismaDefinitionFolder
+    }, this.config);
     //DOC prisma schema is set in package.json
     return this.server.register([plugins.prisma], { once: true });
   }
 
   async initViews() {
     if (this.config.server.client !== "external") {
-      // DOC use predefined admin
-      await initPugAdmin(this.server, this.overrides);
+      // FEATURE use predefined admin
+      await initPugAdmin(this.server, this.overrides, this.config, logger);
     } else {
       await this.server.register(Inert);
-      // for ui client
+      // FEATURE serve ui client
+      if (this.config.server.admin.redirect) {
+        this.server.route({
+          method: "GET",
+          path: this.config.server.client.path,
+          handler: (_, h) => {
+            return h.redirect(this.config.server.admin.target).code(307);
+          },
+        });
+      }
       this.server.route({
         method: "GET",
-        path: "/",
+        path: this.config.server.client.path,
         handler: (request, h) =>
-          rootViewHandler(h, this.config.server.client.path),
+          rootViewHandler(h, this.config.server.client.target),
       });
     }
     return;
@@ -148,6 +157,7 @@ class AdminServer {
     await this.initCrud();
     await this.initAdditionalRoutes();
     await this.initViews();
+    
 
     return this.server;
   }

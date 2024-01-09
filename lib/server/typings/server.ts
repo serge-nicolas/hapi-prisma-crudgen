@@ -41,5 +41,5 @@ export {
   RequestPayloadPut,
   PrismaQuery,
   PrismaRule,
-  PrismaRules,
+  PrismaRules
 };

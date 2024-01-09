@@ -79,18 +79,28 @@ class Resource {
   buildQuery(request: Hapi.Request): Resource {
     console.log("query", request.query, request.params);
     let query: PrismaQuery = { where: null, select: { id: true }, data: null };
+    let select: any = [];
     if (notAnEmptyObject(request.query)) {
       // for route like : ?where='{"id": ""}'&select='["id","email"]'
-      const select: any = !!request.query?.select
-        ? JSON.parse(request.query.select)
-        : null;
+      if (!!request.query.select) {
+        const selectFields = JSON.parse(request.query.select).map((key:string) => ({
+          [key]: true,
+        }));
+        select = !!request.query?.select ? selectFields : null;
+      }
+
       const where: any = !!request.query?.where
         ? JSON.parse(request.query.where)
         : null;
-      Object.assign(query, { where: where }, { select: select });
+      Object.assign(
+        query,
+        { where: where },
+        { select: Object.assign({}, ...select) }
+      );
     }
     if (notAnEmptyObject(request.params)) {
       // for route with params
+
       Object.assign(query, { where: request.params });
     }
 

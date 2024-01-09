@@ -1,38 +1,64 @@
-div(class="block p-6 border border-gray-200 rounded-lg").form__container
-    div(class="text-base font-semibold leading-5 text-gray-900").form__title Edit
-    hr.mb-8
-    form.form__main(method="POST" enctype="multipart/form-data")
-        .form-body.col-span-3
-        .form-side.border-l-4.p-4
-            .form-alert
-            .item-details
-                div= "id: " + itemData.id
-                div= "created: " + itemData.createdAt
-                div= "updated: " + itemData.updatedAt
-                div(id="changedData")
+div(class="block p-6 border bg-white border-gray-200 rounded-lg").container.form__container
+    div.form__main-header
+        if Object.keys(itemData).length > 0
+            div Edit
+        else
+            div New
+    hr.mb-4.mt-4
+    form.form__main(enctype="multipart/form-data")
+        .form__main-body.col-span-3
+        .form__main-side.border-l-2.p-4
+            .form__main-details.mb-4
+                if Object.keys(itemData).length
+                    div.flex.justify-between
+                        div.font-bold.uppercase.mr-1="id"
+                        div=itemData.id
+                    div.flex.justify-between
+                        div.font-bold.uppercase.mr-1="created "
+                        div=itemData.createdAt
+                    div.flex.justify-between
+                        div.font-bold.uppercase.mr-1="updated "
+                        div=itemData.updatedAt
+                    hr.mb-4.mt-4
+                    div.flex.justify-between
+                        div.font-bold.uppercase
+                            Changed fields
+                        div(id="changedData")
 
             hr.mb-4
-            button(type="submit" class="btn-primary") Save
-            button(class="btn-secondary") Reset
+            div.flex
+                button(type="submit" class="btn-primary")
+                    div.flex
+                        div.form__main-actionsubmit-icon
+                        div Save
+                button(class="btn-secondary") Reset
+            div.mt-4
+                .form__main-alert.hidden.alert.success
 
         template.form-field-template(data-for="String")
-            div.mb-4
-                label.form__elt-label {{ name }}
-                input.form__elt-input(ref="{{ name }}" id="{{ name }}" type="text")
+            div.mb-4(class="{{ shouldHide ? 'hidden': 'flex'}}")
+                label.form__elt-label.w-24 {{ name }}
+                input.form__elt-input(ref="{{modelName}}-{{name}}" type="text")
+
+        template.form-field-template(data-for="DateTime")
+            div.mb-4(class="{{ shouldHide ? 'hidden': 'flex'}}")
+                label.form__elt-label.w-24 {{ name }}
+                input.form__elt-input(ref="{{modelName}}-{{name}}" type="text")
 
         template.form-field-template(data-for="Boolean")
-            div.mb-4
-                input.form__elt-boolean(ref="{{ name }}" type="checkbox" value="")
-                label.form__elt-label {{ name }}
-                           
+            div.mb-4(class="{{ shouldHide ? 'hidden': 'flex'}}")
+                input.form__elt-boolean(ref="{{modelName}}-{{name}}" type="checkbox")
+                label.form__elt-label.w-24 {{ name }}
+                        
         template.form-field-template(data-for="Select")
-            div.mb-4
-                label.form__elt-label {{ name }}
-                select.form__elt-select(ref="{{ name }}")
+            div.mb-4(class="{{ shouldHide ? 'hidden': 'flex'}}")
+                label.form__elt-label.w-24 {{ name }}
+                select.form__elt-select(ref="{{modelName}}-{{name}}")
 
     script(defer).
-        window.addEventListener("DOMContentLoaded", function() {
-            window.APP.listener.addEventListener("routeChange", function(data) {
+        window.addEventListener("DOMContentLoaded", async function() {
+            console.log("action", window.APP.currentRoute);
+            if(window.APP.currentRoute.path.action === "edit") {
                 window.APP.formRenderer.buildForm(
                     ".form__main",
                     window.APP.currentRoute,
@@ -40,9 +66,9 @@ div(class="block p-6 border border-gray-200 rounded-lg").form__container
                     !{JSON.stringify(itemData)},
                     function() {
                         document
-                            .querySelector(".form-container")
+                            .querySelector(".route-edit")
                             .classList.replace("hidden", "block");
                     }
                 );
-            });
+            }
         });
