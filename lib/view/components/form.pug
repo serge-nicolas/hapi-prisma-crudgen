@@ -1,11 +1,15 @@
 div(class="block p-6 border bg-white border-gray-200 rounded-lg").container.form__container
     div.form__main-header
         if Object.keys(itemData).length > 0
-            div Edit
+            div.flex 
+                span.mr-2 Edit 
+                span=route.model
         else
-            div New
+             div.flex 
+                span.mr-2 New 
+                span=route.model
     hr.mb-4.mt-4
-    form.form__main(enctype="multipart/form-data" novalidate)
+    form.form__main(enctype="multipart/form-data" novalidate data[model]=route.model ref="mainform__"+route.model)
         .form__main-body.col-span-3
         .form__main-side.border-l-2.p-4
             .form__main-details.mb-4
@@ -27,13 +31,13 @@ div(class="block p-6 border bg-white border-gray-200 rounded-lg").container.form
 
             hr.mb-4
             div.flex
-                button(type="submit" class="btn-primary")
+                button.btn-primary(type="submit" disabled ref="mainform__"+route.model+"--submitbutton")
                     div.flex
                         div.form__main-actionsubmit-icon
                         div Save
                 button(class="btn-secondary") Reset
             div.mt-4
-                .form__main-alert.hidden.alert.success
+                .form__main-alert.hidden.alert
 
         template.form-field-template(data-for="String")
             div.mb-4(class="{{ shouldHide ? 'hidden': 'flex'}}")
@@ -66,7 +70,7 @@ div(class="block p-6 border bg-white border-gray-200 rounded-lg").container.form
         window.addEventListener("DOMContentLoaded", async function() {
             if(window.APP.currentRoute.path.action === "edit") {
                 window.APP.formRenderer.buildForm(
-                    ".form__main",
+                    `[ref="mainform__${window.APP.currentRoute.path.model}"]`,
                     window.APP.currentRoute,
                     "template.form-field-template",
                     !{JSON.stringify(itemData)},
@@ -74,7 +78,8 @@ div(class="block p-6 border bg-white border-gray-200 rounded-lg").container.form
                         document
                             .querySelector(".route-edit")
                             .classList.replace("hidden", "block");
-                    }
+                    },
+                    "mainform__" + window.APP.currentRoute.path.model+"--submitbutton"
                 );
             }
         });
