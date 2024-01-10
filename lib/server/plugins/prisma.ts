@@ -11,12 +11,8 @@ declare module "@hapi/hapi" {
 
 interface DmmfModel {
   name: string;
-  dbName: string;
   fields: Array<object>;
-  primaryKey: string;
-  uniqueFields: Array<Array<string>>;
-  uniqueIndexes: Array<Array<object>>;
-  isGenerated: boolean;
+  view: object;
 }
 
 interface HapiPlugin {
@@ -42,15 +38,14 @@ const prismaPlugin = (
       });
       //DOC register prismaClient to Hapi
       server.app.prisma = prismaClient;
-      console.log("config.server", config.server.display.table.fieldsByModel);
-
       //DOC build, DMMF. dataModel not accessible
       //DOC can't use  ModelName  from "@prisma/client" : need more info than a simple list
-
       const DMMFModels: Array<DmmfModel> = Object.keys(prismaClient)
         .filter((key: string) => !key.includes("_") && !key.includes("$")) // remove non model keys from prisma DMMF
         .map((model: any) => {
           const modelData = prismaClient[model] as any;
+          // BUG required not present in DmmfModel
+
           return {
             name: modelData.$name,
             // not working now? need prisma update, here for next evolution
@@ -60,12 +55,25 @@ const prismaPlugin = (
               shouldHide: config.server.autoFields.includes(
                 modelData.fields[field].name
               ),
+              isProtected: config.server.protectedFields.includes(
+                modelData.fields[field].name
+              ),
+              isRequired:
+                config.server.requiredFields[model]?.includes(
+                  modelData.fields[field].name
+                ) || false,
+              validationPattern: (() => {
+                if (config.server.validateFields[model]) {
+                  return Object.keys(
+                    config.server.validateFields[model]
+                  ).includes(modelData.fields[field].name)
+                    ? config.server.validateFields[model][
+                        modelData.fields[field].name
+                      ]
+                    : null;
+                }
+              })(),
             })),
-            dbName: modelData.dbName,
-            primaryKey: modelData.primaryKey,
-            uniqueFields: modelData.uniqueFields,
-            uniqueIndexes: modelData.uniqueIndexes,
-            isGenerated: modelData.isGenerated,
             view: {
               tableFields: config.server.display.table.fieldsByModel[
                 modelData.$name

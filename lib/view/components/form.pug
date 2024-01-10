@@ -5,7 +5,7 @@ div(class="block p-6 border bg-white border-gray-200 rounded-lg").container.form
         else
             div New
     hr.mb-4.mt-4
-    form.form__main(enctype="multipart/form-data")
+    form.form__main(enctype="multipart/form-data" novalidate)
         .form__main-body.col-span-3
         .form__main-side.border-l-2.p-4
             .form__main-details.mb-4
@@ -20,10 +20,10 @@ div(class="block p-6 border bg-white border-gray-200 rounded-lg").container.form
                         div.font-bold.uppercase.mr-1="updated "
                         div=itemData.updatedAt
                     hr.mb-4.mt-4
-                    div.flex.justify-between
-                        div.font-bold.uppercase
-                            Changed fields
-                        div(id="changedData")
+                div.flex.justify-between
+                    div.font-bold.uppercase
+                        Changed fields
+                    div(id="changedData")
 
             hr.mb-4
             div.flex
@@ -34,6 +34,11 @@ div(class="block p-6 border bg-white border-gray-200 rounded-lg").container.form
                 button(class="btn-secondary") Reset
             div.mt-4
                 .form__main-alert.hidden.alert.success
+
+        template.form-field-template(data-for="String")
+            div.mb-4(class="{{ shouldHide ? 'hidden': 'flex'}}")
+                label.form__elt-label.w-24 {{ name }}
+                input.form__elt-input(ref="{{modelName}}-{{name}}" type="text")
 
         template.form-field-template(data-for="String")
             div.mb-4(class="{{ shouldHide ? 'hidden': 'flex'}}")
@@ -54,10 +59,11 @@ div(class="block p-6 border bg-white border-gray-200 rounded-lg").container.form
             div.mb-4(class="{{ shouldHide ? 'hidden': 'flex'}}")
                 label.form__elt-label.w-24 {{ name }}
                 select.form__elt-select(ref="{{modelName}}-{{name}}")
+                    option SELECT
+                    option ----
 
     script(defer).
         window.addEventListener("DOMContentLoaded", async function() {
-            console.log("action", window.APP.currentRoute);
             if(window.APP.currentRoute.path.action === "edit") {
                 window.APP.formRenderer.buildForm(
                     ".form__main",

@@ -1,0 +1,9 @@
+# BUG isrequired not accessible
+
+requiredFields:
+  user:
+    - email
+
+validateFields:
+  user:
+    email: /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/

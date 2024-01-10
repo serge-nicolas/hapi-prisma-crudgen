@@ -23,3 +23,10 @@ input[type="submit"] {
 .form__main-header {
   @apply text-base font-semibold leading-5 text-gray-900 uppercase tracking-wider
 }
+
+.invalidData {
+  @apply invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500
+}
+input {
+  @apply appearance-none outline-none
+}

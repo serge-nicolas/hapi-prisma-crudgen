@@ -19,7 +19,8 @@ imports:
   - { resource: ./config/server/routes.yaml }
   - { resource: ./config/server/auth.yaml }
   - { resource: ./config/server/path.yaml }
-  - { resource: ./config/server/view.yaml }
+  - { resource: ./config/front/view.yaml }
+  - { resource: ./config/front/fields.yaml }
 
 path:  
   admin: 
