@@ -22,3 +22,7 @@ button.btn-secondary {
 .sidebar {
   @apply fixed top-20 right-0 z-40 h-screen
 }
+
+nav {
+  @apply bg-white border-gray-200 dark:bg-gray-900
+}
