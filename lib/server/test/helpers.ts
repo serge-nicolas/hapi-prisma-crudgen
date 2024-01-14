@@ -9,12 +9,18 @@ import {
   createSchema,
 } from "../validation/query";
 
+// TODO priority 1 : add bearer
+// headers: { authorization: `Bearer ${jwt}` },
+
 const API = `${process.env.API}`;
+// for extended api
+const API_EXT = `${process.env.API_EXT}`;
 
 const getData = async (
   model: string,
   action: string = "findUnique" || "findMany",
-  cond?: Object
+  cond?: Object,
+  headers: any = null
 ): Promise<AxiosResponse> => {
   let response: AxiosResponse<any>;
   let validatedCond: any = "";
@@ -25,10 +31,15 @@ const getData = async (
         const { value, error, warning } = schema.validate(cond);
         validatedCond = `where=${JSON.stringify(value)}`;
       }
-      response = await axios.get(`${API}${model}/${action}?${validatedCond}&select=${JSON.stringify({
-        id: true,
-        email: true,
-      })}`);
+      response = await axios.get(
+        `${API}${model}/${action}?${validatedCond}&select=${JSON.stringify({
+          id: true,
+          email: true,
+        })}`,
+        {
+          headers,
+        }
+      );
       return response;
 
     case "findMany":
@@ -37,7 +48,9 @@ const getData = async (
         const { value, error, warning } = schema.validate(cond);
         validatedCond = `where=${JSON.stringify(value)}`;
       }
-      response = await axios.get(`${API}${model}/${action}?${validatedCond}`);
+      response = await axios.get(`${API}${model}/${action}?${validatedCond}`, {
+        headers,
+      });
       return response;
 
     default:
@@ -127,4 +140,42 @@ const updateUnique = async (
   }
 };
 
-export { getData, postData, deleteUnique, updateUnique, createData };
+const userLoginRedeem = async (code: string): Promise<AxiosResponse> => {
+  if (!!code) {
+    try {
+      return await axios.post(`${API}login?redeem_code=${code}`);
+    } catch (e) {
+      throw Error(e);
+    }
+  } else {
+    throw Error("no data");
+  }
+};
+
+const userLogin = async (
+  model: string,
+  data: any | Array<any>
+): Promise<AxiosResponse> => {
+  if (!!data) {
+    const schema = findManySchemas(model) as Joi.ObjectSchema;
+    try {
+      const { value, error, warning } = schema.validate(data);
+      return await axios.post(`${API_EXT}login`, value);
+    } catch (e) {
+      console.log(`${API_EXT}login`);
+      throw Error(e);
+    }
+  } else {
+    throw Error("no data");
+  }
+};
+
+export {
+  getData,
+  postData,
+  deleteUnique,
+  updateUnique,
+  createData,
+  userLogin,
+  userLoginRedeem,
+};

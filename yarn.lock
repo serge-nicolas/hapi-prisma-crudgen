@@ -642,6 +642,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hapi/boom@npm:^7.4.11":
+  version: 7.4.11
+  resolution: "@hapi/boom@npm:7.4.11"
+  dependencies:
+    "@hapi/hoek": "npm:8.x.x"
+  checksum: 34abe4088ec4a938663451dc7dd0433584591432068631a0f4987440d40a163af16bd922acb5afb64cc64977b01da5e720369e540be55a088b7ebcf280205e56
+  languageName: node
+  linkType: hard
+
 "@hapi/bounce@npm:^3.0.0, @hapi/bounce@npm:^3.0.1":
   version: 3.0.1
   resolution: "@hapi/bounce@npm:3.0.1"
@@ -763,7 +772,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hapi/hoek@npm:9.x.x, @hapi/hoek@npm:^9.0.0":
+"@hapi/hoek@npm:8.x.x":
+  version: 8.5.1
+  resolution: "@hapi/hoek@npm:8.5.1"
+  checksum: 3279747618d3be88e384af2be9aff8366dd0cbdba61d37f162d896fe4432f90b3986f96f0e5815429a72e7b6b7293429a4aaff42c234e42ee6a66bb1f9fb14dd
+  languageName: node
+  linkType: hard
+
+"@hapi/hoek@npm:9.x.x, @hapi/hoek@npm:^9.0.0, @hapi/hoek@npm:^9.2.0":
   version: 9.3.0
   resolution: "@hapi/hoek@npm:9.3.0"
   checksum: a096063805051fb8bba4c947e293c664b05a32b47e13bc654c0dd43813a1cec993bdd8f29ceb838020299e1d0f89f68dc0d62a603c13c9cc8541963f0beca055
@@ -1350,6 +1366,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@now-ims/hapi-now-auth@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@now-ims/hapi-now-auth@npm:2.1.0"
+  dependencies:
+    "@hapi/boom": "npm:^7.4.11"
+    "@hapi/hoek": "npm:^9.2.0"
+    joi: "npm:^17.4.2"
+    jsonwebtoken: "npm:^8.5.1"
+  checksum: e2abe074234c2784f1b82e346509e493176be5ccffb1c05c61b6680c69e66ff628fa1771eda1f1823886029949a24e9077d984f9429102c64a7b0af4e6556328
+  languageName: node
+  linkType: hard
+
 "@npmcli/agent@npm:^2.0.0":
   version: 2.2.0
   resolution: "@npmcli/agent@npm:2.2.0"
@@ -1653,6 +1681,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/uuid@npm:^9":
+  version: 9.0.7
+  resolution: "@types/uuid@npm:9.0.7"
+  checksum: b329ebd4f9d1d8e08d4f2cc211be4922d70d1149f73d5772630e4a3acfb5170c6d37b3d7a39a0412f1a56e86e8a844c7f297c798b082f90380608bf766688787
+  languageName: node
+  linkType: hard
+
 "@types/yamljs@npm:^0.2.33":
   version: 0.2.34
   resolution: "@types/yamljs@npm:0.2.34"
@@ -1845,6 +1880,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"asn1.js@npm:^5.0.0":
+  version: 5.4.1
+  resolution: "asn1.js@npm:5.4.1"
+  dependencies:
+    bn.js: "npm:^4.0.0"
+    inherits: "npm:^2.0.1"
+    minimalistic-assert: "npm:^1.0.0"
+    safer-buffer: "npm:^2.1.0"
+  checksum: b577232fa6069cc52bb128e564002c62b2b1fe47f7137bdcd709c0b8495aa79cee0f8cc458a831b2d8675900eea0d05781b006be5e1aa4f0ae3577a73ec20324
+  languageName: node
+  linkType: hard
+
 "assert-never@npm:^1.2.1":
   version: 1.2.1
   resolution: "assert-never@npm:1.2.1"
@@ -1985,6 +2032,13 @@ __metadata:
     easy-table: "npm:1.x.x"
     joi: "npm:17.x.x"
   checksum: 10c0dabdc829528dee9f6c3066f3d0cfb8e4732203f4378c992ae695e827d39b878eda98a907aafb4ddfffb39f09c147e1c4af8091663287f90178ddc731f849
+  languageName: node
+  linkType: hard
+
+"bn.js@npm:^4.0.0":
+  version: 4.12.0
+  resolution: "bn.js@npm:4.12.0"
+  checksum: 9736aaa317421b6b3ed038ff3d4491935a01419ac2d83ddcfebc5717385295fcfcf0c57311d90fe49926d0abbd7a9dbefdd8861e6129939177f7e67ebc645b21
   languageName: node
   linkType: hard
 
@@ -3078,6 +3132,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hapi-auth-bearer-token@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "hapi-auth-bearer-token@npm:8.0.0"
+  dependencies:
+    "@hapi/hoek": "npm:^9.0.0"
+  peerDependencies:
+    "@hapi/boom": ">=7.x.x"
+    "@hapi/hapi": ">=19.x.x"
+    joi: ">=17.x.x"
+  checksum: be652db2b4bf9570a879a71bd5e9ddccc2d653754ff5d41ed8fa56a0a5b8008bc203e3c32768cb76c4cd4efb9cd36ca3852904689ed9682c05416668771868d9
+  languageName: node
+  linkType: hard
+
 "hapi-auth-jwt2@npm:^10.4.0":
   version: 10.5.0
   resolution: "hapi-auth-jwt2@npm:10.5.0"
@@ -3110,16 +3177,19 @@ __metadata:
     "@hapi/nes": "npm:^13.0.1"
     "@hapi/vision": "npm:^7.0.3"
     "@hapi/wreck": "npm:^18.0.1"
+    "@now-ims/hapi-now-auth": "npm:^2.1.0"
     "@prisma/client": "npm:^5.7.1"
     "@types/hapi__nes": "npm:^11.0.7"
     "@types/jest": "npm:^29.5.10"
     "@types/node": "npm:^20.8.10"
     "@types/pug": "npm:^2.0.8"
+    "@types/uuid": "npm:^9"
     "@types/yamljs": "npm:^0.2.33"
     axios: "npm:^1.6.2"
     blipp: "npm:^4.0.2"
     dotenv: "npm:^16.3.1"
     glob: "npm:^10.3.10"
+    hapi-auth-bearer-token: "npm:^8.0.0"
     hapi-auth-jwt2: "npm:^10.4.0"
     hapi-dev-errors: "npm:^4.0.0"
     i18next: "npm:^23.7.6"
@@ -3127,7 +3197,7 @@ __metadata:
     jest: "npm:^29.7.0"
     joi: "npm:^17.11.0"
     nodemon: "npm:^3.0.1"
-    path-to-regexp: "npm:^6.2.1"
+    openpgp: "npm:^5.11.0"
     postcss: "npm:^8.4.32"
     postcss-import: "npm:^15.1.0"
     prisma: "npm:^5.7.1"
@@ -3139,6 +3209,7 @@ __metadata:
     ts-node-dev: "npm:^2.0.0"
     tsx: "npm:^4.6.2"
     typescript: "npm:^5.2.2"
+    uuid: "npm:^9.0.1"
     winston: "npm:^3.11.0"
     yaml-with-import: "npm:^1.0.6"
     yamljs: "npm:^0.3.0"
@@ -3311,7 +3382,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inherits@npm:2, inherits@npm:^2.0.3":
+"inherits@npm:2, inherits@npm:^2.0.1, inherits@npm:^2.0.3":
   version: 2.0.4
   resolution: "inherits@npm:2.0.4"
   checksum: 4e531f648b29039fb7426fb94075e6545faa1eb9fe83c29f0b6d9e7263aceb4289d2d4557db0d428188eeb449cc7c5e77b0a0b2c4e248ff2a65933a0dee49ef2
@@ -3982,7 +4053,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"joi@npm:17.x.x, joi@npm:^17.11.0, joi@npm:^17.2.1, joi@npm:^17.7.0":
+"joi@npm:17.x.x, joi@npm:^17.11.0, joi@npm:^17.2.1, joi@npm:^17.4.2, joi@npm:^17.7.0":
   version: 17.11.0
   resolution: "joi@npm:17.11.0"
   dependencies:
@@ -4043,6 +4114,24 @@ __metadata:
   bin:
     json5: lib/cli.js
   checksum: 5a04eed94810fa55c5ea138b2f7a5c12b97c3750bc63d11e511dcecbfef758003861522a070c2272764ee0f4e3e323862f386945aeb5b85b87ee43f084ba586c
+  languageName: node
+  linkType: hard
+
+"jsonwebtoken@npm:^8.5.1":
+  version: 8.5.1
+  resolution: "jsonwebtoken@npm:8.5.1"
+  dependencies:
+    jws: "npm:^3.2.2"
+    lodash.includes: "npm:^4.3.0"
+    lodash.isboolean: "npm:^3.0.3"
+    lodash.isinteger: "npm:^4.0.4"
+    lodash.isnumber: "npm:^3.0.3"
+    lodash.isplainobject: "npm:^4.0.6"
+    lodash.isstring: "npm:^4.0.1"
+    lodash.once: "npm:^4.0.0"
+    ms: "npm:^2.1.1"
+    semver: "npm:^5.6.0"
+  checksum: c5ad937b6fa23a230efa8ed8ca3c0da8ebfdd377bafc3e8432a11b03ef90e733400a00b26c0dfee47db44a2e64b88b154b57e9926a92990f98dd25aaed15006e
   languageName: node
   linkType: hard
 
@@ -4350,6 +4439,13 @@ __metadata:
   version: 2.1.0
   resolution: "mimic-fn@npm:2.1.0"
   checksum: b26f5479d7ec6cc2bce275a08f146cf78f5e7b661b18114e2506dd91ec7ec47e7a25bf4360e5438094db0560bcc868079fb3b1fb3892b833c1ecbf63f80c95a4
+  languageName: node
+  linkType: hard
+
+"minimalistic-assert@npm:^1.0.0":
+  version: 1.0.1
+  resolution: "minimalistic-assert@npm:1.0.1"
+  checksum: 96730e5601cd31457f81a296f521eb56036e6f69133c0b18c13fe941109d53ad23a4204d946a0d638d7f3099482a0cec8c9bb6d642604612ce43ee536be3dddd
   languageName: node
   linkType: hard
 
@@ -4670,6 +4766,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"openpgp@npm:^5.11.0":
+  version: 5.11.0
+  resolution: "openpgp@npm:5.11.0"
+  dependencies:
+    asn1.js: "npm:^5.0.0"
+  checksum: e1c405240eea76b81d3a0b55d318f0abc2d76766732ab747c57b97944dfb272480b711acd69282162dbf4660fa5a4090e9d52b4b5adebb42ed3fb3cfc20f7353
+  languageName: node
+  linkType: hard
+
 "p-limit@npm:^2.2.0":
   version: 2.3.0
   resolution: "p-limit@npm:2.3.0"
@@ -4760,13 +4865,6 @@ __metadata:
     lru-cache: "npm:^9.1.1 || ^10.0.0"
     minipass: "npm:^5.0.0 || ^6.0.2 || ^7.0.0"
   checksum: e5dc78a7348d25eec61ab166317e9e9c7b46818aa2c2b9006c507a6ff48c672d011292d9662527213e558f5652ce0afcc788663a061d8b59ab495681840c0c1e
-  languageName: node
-  linkType: hard
-
-"path-to-regexp@npm:^6.2.1":
-  version: 6.2.1
-  resolution: "path-to-regexp@npm:6.2.1"
-  checksum: 7a73811ca703e5c199e5b50b9649ab8f6f7b458a37f7dff9ea338815203f5b1f95fe8cb24d4fdfe2eab5d67ce43562d92534330babca35cdf3231f966adb9360
   languageName: node
   linkType: hard
 
@@ -5290,10 +5388,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"safer-buffer@npm:>= 2.1.2 < 3.0.0":
+"safer-buffer@npm:>= 2.1.2 < 3.0.0, safer-buffer@npm:^2.1.0":
   version: 2.1.2
   resolution: "safer-buffer@npm:2.1.2"
   checksum: 7e3c8b2e88a1841c9671094bbaeebd94448111dd90a81a1f606f3f67708a6ec57763b3b47f06da09fc6054193e0e6709e77325415dc8422b04497a8070fa02d4
+  languageName: node
+  linkType: hard
+
+"semver@npm:^5.6.0":
+  version: 5.7.2
+  resolution: "semver@npm:5.7.2"
+  bin:
+    semver: bin/semver
+  checksum: e4cf10f86f168db772ae95d86ba65b3fd6c5967c94d97c708ccb463b778c2ee53b914cd7167620950fc07faf5a564e6efe903836639e512a1aa15fbc9667fa25
   languageName: node
   linkType: hard
 
@@ -6007,6 +6114,15 @@ __metadata:
   dependencies:
     inherits: "npm:2.0.3"
   checksum: d29f6893e406b63b088ce9924da03201df89b31490d4d011f1c07a386ea4b3dbe907464c274023c237da470258e1805d806c7e4009a5974cd6b1d474b675852a
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "uuid@npm:9.0.1"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 1607dd32ac7fc22f2d8f77051e6a64845c9bce5cd3dd8aa0070c074ec73e666a1f63c7b4e0f4bf2bc8b9d59dc85a15e17807446d9d2b17c8485fbc2147b27f9b
   languageName: node
   linkType: hard
 

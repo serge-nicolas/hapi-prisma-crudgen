@@ -5,7 +5,6 @@ import Hapi from "@hapi/hapi";
 
 import HapiPrismaCrud from "./lib/server/index";
 import translate from "./lib/server/plugins/translate";
-import logger from "./lib/server/plugins/logger";
 
 import Youch from "youch";
 import forTerminal from "youch-terminal";
@@ -24,27 +23,26 @@ const youchOptions = {
 const init = async (): Promise<void> => {
   const server = Hapi.server({
     port: process.env.PORT,
+    debug: { request: [process.env.NODE_ENV === "production" ? "error" : "*"] },
     host: "localhost",
     routes: {
-     
       cors: {
-        origin: ["Access-Control-Allow-Origin", `localhost:${process.env.PORT}`],
+        origin: [
+          "Access-Control-Allow-Origin",
+          `localhost:${process.env.PORT}`,
+        ],
         headers: ["Accept", "Content-Type"],
       },
     },
-  });
-  // FEATURE install logger in app.logger
-  await server.register({
-    plugin: logger(),
   });
   // FEATURE WIP
   await server.register({
     plugin: translate(),
   });
 
+  // FEATURE pretty error reporting, see https://www.npmjs.com/package/hapi-dev-errors
+  // BUG: hapi-dev-error must be registered at plugin level
   /*
-// FEATURE pretty error reporting, see https://www.npmjs.com/package/hapi-dev-errors
-// BUG: hapi-dev-error must be registered at plugin level  
 await server.register({
     plugin: require("hapi-dev-errors"),
     options: {
@@ -76,22 +74,34 @@ await server.register({
   });
 
   try {
-    console.log("start server");
     await server.start();
-    console.group("server");
-    console.info(
-      "=== Server running on %s ===",
-      server.info.uri,
-      "\nroutes",
-      server.table().map((route) => `${route.method}: ${route.path}`)
-    );
-    console.groupEnd();
+    if (server.info.started) {
+      console.info("=== Server running on %s ===", server.info.uri);
+
+      console.info("\nRoutes");
+
+      console.table(
+        [
+          ...server
+            .table()
+            .map((route) => ({
+              method: route.method,
+              model: route.path.replace("/api/", "").split("/")[0],
+              type: route.path.split("/")[1],
+              URI: route.path,
+            }))
+            .sort((a, b) => a.model.localeCompare(b.model)),
+        ],
+        ["method", "model", "URI"]
+      );
+    }
   } catch (error) {
     throw new Error(error);
   }
 };
 
 process.on("unhandledRejection", async (err) => {
+  console.error(err);
   const jsonResponse = await new Youch(err, {}).toJSON();
   console.error(forTerminal(jsonResponse, youchOptions));
   process.exit(1);

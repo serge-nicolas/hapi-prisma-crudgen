@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-import validators from "./validators";
+import { validators } from "./validators";
 
 interface FieldDefinition {
   [key: string]: string;
@@ -8,7 +8,7 @@ interface FieldDefinition {
 
 /**
  * get validators for field list
- * 
+ *
  */
 export default (fields: Array<FieldDefinition>) => {
   return (Object.keys(fields) as (keyof typeof fields)[]).map((fieldKey) => {

@@ -1,11 +1,6 @@
 hapi:
   routes:
     api:
-      - path: /api/login
-        method: post
-        options:
-          auth: false
-
       - path: /api/upload
         method: post
 

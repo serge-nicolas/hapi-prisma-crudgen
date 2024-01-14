@@ -1,0 +1,26 @@
+auth:
+  type: passworlesswithemail
+  default:
+    scheme: AuthBearer
+    name: simple-strategy
+  cookie: 
+    ttl: 365 * 24 * 60 * 60 * 1000
+    encoding: none
+    isSecure: true
+    isHttpOnly: true 
+    clearInvalid: false
+    strictHeader: true
+
+protectedFields:
+  - passphrase
+  - password
+
+autoFields:
+  - createdAt
+  - updatedAt
+  - id
+
+userFieldsAtLogin:
+  - email
+  - role
+  - groups

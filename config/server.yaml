@@ -1,15 +1,6 @@
-protectedFields:
-  - passphrase
-  - password
 
-autoFields:
-  - createdAt
-  - updatedAt
-  - id
 
 client: useExternal
-
-auth: passworlesswithemail
 
 modules: 
   - taskManager
@@ -17,7 +8,7 @@ modules:
 imports:
   - { resource: ./config/server/actions.yaml }
   - { resource: ./config/server/routes.yaml }
-  - { resource: ./config/server/auth.yaml }
+  - { resource: ./config/server/security.yaml }
   - { resource: ./config/server/path.yaml }
   - { resource: ./config/front/view.yaml }
   - { resource: ./config/front/fields.yaml }

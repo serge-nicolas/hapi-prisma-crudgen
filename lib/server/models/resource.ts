@@ -77,10 +77,10 @@ class Resource {
   }
 
   buildQuery(request: Hapi.Request): Resource {
-    console.log("query", request.query, request.params);
     let query: PrismaQuery = { where: null, select: { id: true }, data: null };
     let select: any = [];
-    if (notAnEmptyObject(request.query)) {
+    // TODO improve empty detection
+    if (notAnEmptyObject(request.query) && !!request.query) {
       // for route like : ?where='{"id": ""}'&select='["id","email"]'
       if (!!request.query.select) {
         const selectFields = JSON.parse(request.query.select).map((key:string) => ({

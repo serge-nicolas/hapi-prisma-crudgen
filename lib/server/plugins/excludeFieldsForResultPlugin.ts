@@ -21,7 +21,7 @@ const excludeFieldsForResultPlugin = (): any => {
     register: async function (server: Hapi.Server, options: any) {
       // TODO set the the correct type for request (with .source)
       server.ext("onPreResponse", (request: any, h: Hapi.ResponseToolkit) => {
-        if(!request.route.path.includes("api")) {
+        /* if(!request.route.path.includes("api")) {
           // exclude all other routes (not array of items)
           return h.continue;
         }
@@ -29,7 +29,7 @@ const excludeFieldsForResultPlugin = (): any => {
         let response: any = request.response;
 
         if (response.isBoom) {
-          return null;
+          return h.continue;
         }
         // FEATURE exclude not items data files etc.
         if (response.source && !response.source.context?.itemData) {
@@ -51,7 +51,7 @@ const excludeFieldsForResultPlugin = (): any => {
           );
           request.response.source = itemData.at(0);
           return h.continue;
-        }
+        } */
 
         return h.continue;
       });

@@ -1,7 +1,12 @@
-import { PrismaClient, $Enums } from "@prisma/client";
+import { $Enums } from "@prisma/client";
+
+import prismaClientInstance from "../controlers/prismaInstance";
+import type { PrismaClient } from "@prisma/client";
+
 import Hapi from "@hapi/hapi";
 import type { Logger } from "winston";
 import createPluginForModel from "../controlers/createPluginForModel";
+import Boom from "@hapi/boom";
 
 declare module "@hapi/hapi" {
   interface ServerApplicationState {
@@ -27,15 +32,9 @@ const prismaPlugin = (
 ): HapiPlugin => {
   const prismaPlugin: Hapi.Plugin<null> = {
     name: "prisma",
-    dependencies: ["logger-middleware", "i18n-middleware"],
+    dependencies: [],
     register: async function (server: Hapi.Server) {
-      const prismaClient: PrismaClient = new PrismaClient({
-        log: [
-          { level: "warn", emit: "event" },
-          { level: "info", emit: "event" },
-          { level: "error", emit: "event" },
-        ],
-      });
+      const prismaClient: PrismaClient = prismaClientInstance;
       //DOC register prismaClient to Hapi
       server.app.prisma = prismaClient;
       //DOC build, DMMF. dataModel not accessible
@@ -91,26 +90,25 @@ const prismaPlugin = (
         throw Error("dmmf not defined // prisma model not loaded");
       }
 
-      //DOC add route meta to return full model
+      // DOC add route meta to return full model
+      // need cors here
       server.route({
         method: "GET",
+        options: {
+          auth: config.server.auth.default.name,
+        },
         path: config.server.path.admin.target + "/meta",
-        handler: (request: Hapi.Request, h: Hapi.ResponseToolkit) => ({
-          $models: DMMFModels,
-          $enums: $Enums,
-          sideMenu: JSON.stringify(DMMFModels.map((obj: any) => obj.name)),
-        }),
+        handler: (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
+          if(!request.auth.isAuthenticated) {
+            return Boom.unauthorized();
+          }
+          return h.response({
+            $models: DMMFModels,
+            $enums: $Enums,
+            sideMenu: JSON.stringify(DMMFModels.map((obj: any) => obj.name)),
+          })
+        },
       });
-
-      if (config.server.path.admin.redirect) {
-        server.route({
-          method: "GET",
-          path: "/",
-          handler: (_, h) => {
-            return h.redirect(config.server.path.admin.target).code(307);
-          },
-        });
-      }
 
       //DOC init each model as plugin
       await Promise.all(
@@ -122,20 +120,6 @@ const prismaPlugin = (
         })
       );
       logger.info("prisma init done");
-
-      server.ext({
-        type: "onPostStop",
-        method: async (server: Hapi.Server) => {
-          server.app.prisma.$disconnect();
-        },
-      });
-      server.ext({
-        type: "onRequest",
-        method: function (request: Hapi.Request, h: Hapi.ResponseToolkit) {
-          logger.debug(request.method.toUpperCase() + "  " + request.path);
-          return h.continue;
-        },
-      });
     },
   };
 

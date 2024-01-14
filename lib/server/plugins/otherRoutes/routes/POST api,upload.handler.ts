@@ -1,11 +1,22 @@
 import type Hapi from "@hapi/hapi";
 import type { PrismaActionMethod } from "../typings/server";
 
-export default async (
+const handler = async (
   route: PrismaActionMethod,
   request: Hapi.Request,
   h: Hapi.ResponseToolkit
 ) => {
   console.log(request.payload);
-  return h.response("graphql run").code(200);
+  return h.response("uploaded").code(200);
 };
+
+// route config
+const config: any = {
+  path: `/api/upload`,
+  method: "POST",
+  options: {
+    auth: false,
+  },
+};
+
+export { handler, config };

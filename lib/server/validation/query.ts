@@ -1,9 +1,10 @@
 import Joi from "joi";
-import { PrismaClient, $Enums } from "@prisma/client";
+import prismaClientInstance from "../controlers/prismaInstance";
+import type { PrismaClient } from "@prisma/client";
 
 import * as val from "./prisma/type";
 
-import validators from "./validators";
+import { validators } from "./validators";
 
 import { removeEmptyOrUndefinedValueFromObject } from "../common/helpers/cleaners";
 
@@ -20,8 +21,8 @@ interface DmmfModel {
   name: string;
   fields: Array<FieldWithType>;
 }
-const prismaClient: PrismaClient = new PrismaClient();
-const DMMFModels: Array<DmmfModel> = Object.keys(prismaClient)
+const prismaClient: PrismaClient = prismaClientInstance;
+const DMMFModels: Array<DmmfModel> = Object.keys(prismaClientInstance)
   .filter((key: string) => !key.includes("_") && !key.includes("$"))
   .map((model: any) => {
     const modelData = prismaClient[model] as any;
@@ -88,6 +89,5 @@ const createSchema = (model: string): any => {
 const findManySchemas = (model: string): any => {
   return findManySchemasByModel[model];
 };
-
 
 export { paginateSchema, findUniqueSchema, findManySchemas, createSchema };

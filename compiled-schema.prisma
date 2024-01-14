@@ -214,13 +214,14 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  email     String     @unique
-  password  String?
-  name      String?
-  status    String?
-  logged    Boolean?   @default(false)
-  role      Role
-  authtoken Authtoken?
+  email    String   @unique
+  password String?
+  name     String?
+  status   String?
+  logged   Boolean? @default(false)
+  role     Role
+
+  preferedLang String?
 
   blocks    Block[]          @relation(name: "createdBy")
   keys      KeyPair[]        @relation(name: "createdBy")
@@ -232,6 +233,9 @@ model User {
   documents DocumentEntity[] @relation(name: "createdBy")
   posts     Post[]           @relation(name: "createdBy")
 
+  logAttempt UserLogAttempt[] @relation(name: "userLogAttempt")
+  tempProxy  UserTempProxy?
+
   userStatus UserStatus @default(active)
 
   groups    UserGroup[] @relation(fields: [groupsIDs], references: [id], name: "userGroups")
@@ -241,7 +245,8 @@ model User {
 
   passphrase String?
 
-  loginType LoginType @default(passwordlesswithemail)
+  loginType LoginType  @default(passwordlesswithemail)
+  Authtoken Authtoken?
 
   @@unique([id, email])
 }
@@ -258,4 +263,30 @@ model UserGroup {
 
   owner   User?   @relation(fields: [ownerId], references: [id], name: "groupOwner")
   ownerId String? @db.ObjectId
+}
+
+model UserLogAttempt {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], name: "userLogAttempt")
+  userId      String   @db.ObjectId
+  oneTimeCode String
+  expire      DateTime
+}
+
+model UserTempProxy {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique @db.ObjectId
+
+  privateKey String?
+  publicKey  String?
+  authtoken  String?
 }

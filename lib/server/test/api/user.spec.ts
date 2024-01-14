@@ -2,7 +2,6 @@ import "dotenv/config";
 
 import {
   getData,
-  postData,
   deleteUnique,
   updateUnique,
   createData,
@@ -14,7 +13,7 @@ const mockedUser: any = {
   role: "ADMIN",
 };
 
-describe("users scenario", () => {
+describe("user create/delete/update scenario", () => {
   let users: AxiosResponse;
   let newUser: any = {};
   test("should return all users", async () => {
@@ -89,7 +88,7 @@ describe("users scenario", () => {
     });
     expect(userToDelete).not.toBeNull();
     const user = await deleteUnique("user", "delete", {
-     id: userToDelete.data.id
+      id: userToDelete.data.id,
     });
     expect(user).not.toBeNull();
     expect(user.status).toBe(200);
