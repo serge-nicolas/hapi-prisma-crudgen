@@ -109,6 +109,7 @@ const redeem = async (
     const definedUser = {
       id: updatedUser.id,
       authtoken: updatedUser.authtoken,
+      publicKey:updatedUser.publicKey 
     };
     config.server.userFieldsAtLogin.forEach((key: string) => {
       Object.assign(definedUser, { [key]: updatedUser.user[key] });

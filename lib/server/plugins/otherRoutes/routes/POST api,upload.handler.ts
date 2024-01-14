@@ -1,8 +1,7 @@
 import type Hapi from "@hapi/hapi";
-import type { PrismaActionMethod } from "../typings/server";
 
 const handler = async (
-  route: PrismaActionMethod,
+  route: any,
   request: Hapi.Request,
   h: Hapi.ResponseToolkit
 ) => {
