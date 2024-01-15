@@ -150,6 +150,23 @@ model Image {
   bucket         String
 }
 
+model File {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy User?   @relation(fields: [user_id], references: [id], name: "createdBy")
+  user_id   String? @db.ObjectId
+
+  src     String
+  url     String
+  mime    String
+  comment String?
+  s3Key   String
+  bucket  String
+}
+
 model KeyPair {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
@@ -228,6 +245,7 @@ model User {
   i18ns     i18n[]           @relation(name: "createdBy")
   comments  Comment[]        @relation(name: "createdBy")
   images    Image[]          @relation(name: "createdBy")
+  files     File[]           @relation(name: "createdBy")
   logs      Log[]            @relation(name: "createdBy")
   tasks     Task[]           @relation(name: "createdBy")
   documents DocumentEntity[] @relation(name: "createdBy")
