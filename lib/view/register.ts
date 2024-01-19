@@ -23,7 +23,14 @@ import {
   existsSync as fsExistsSync,
   readFileSync as fsReadFileSync,
 } from "node:fs";
+
 import { pathToRegexp, parseQuery } from "./lib/common/routeParse";
+
+import { fileURLToPath } from "url";
+import { dirname } from "node:path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const idCheck: RegExp = /^[0-9a-fA-F]{24}$/;
 

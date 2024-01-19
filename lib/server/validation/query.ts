@@ -74,16 +74,20 @@ const findUniqueSchema = (model: string): any => {
 
 const createSchema = (model: string): any => {
   // set from config the fields needed
-  const schema: any = Object.keys(config.validate.byModel[model]).map(
-    (item: any) => ({
-      [item]:
-        validators[
-          config.validate.byModel[model][item] as keyof typeof validators
-        ],
-    })
-  );
-  const preparedSchema: any = Object.assign({}, ...schema);
-  return Joi.object(removeEmptyOrUndefinedValueFromObject(preparedSchema));
+  console.log("validate", config.validate.byModel);
+  if(Object.keys(config.validate).includes(model)) {
+    const schema: any = Object.keys(config.validate[model]).map(
+      (item: any) => ({
+        [item]:
+          validators[
+            config.validate.byModel[model][item] as keyof typeof validators
+          ],
+      })
+    );
+    const preparedSchema: any = Object.assign({}, ...schema);
+    return Joi.object(removeEmptyOrUndefinedValueFromObject(preparedSchema));
+  } 
+  return true;
 };
 
 const findManySchemas = (model: string): any => {

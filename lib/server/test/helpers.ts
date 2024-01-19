@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { AxiosResponse } from "axios";
+import type { AxiosError, AxiosResponse } from "axios";
 
 import type Joi from "joi";
 
@@ -28,7 +28,9 @@ const getData = async (
     case "findUnique":
       if (!!cond) {
         const schema = findUniqueSchema(model) as Joi.ObjectSchema;
-        const { value, error, warning } = schema.validate(cond);
+        const { value, error, warning } = schema
+          ? { value: cond, error: {}, warning: {} }
+          : schema?.validate(cond);
         validatedCond = `where=${JSON.stringify(value)}`;
       }
       response = await axios.get(
@@ -62,15 +64,25 @@ const getData = async (
 const createData = async (
   model: string,
   action: string = "create",
-  data: any | Array<any>
+  data: any | Array<any>,
+  headers: any = null
 ): Promise<AxiosResponse> => {
   if (!!data) {
     const schema = createSchema(model) as Joi.ObjectSchema;
-    const { value, error, warning } = schema.validate(data);
+    const { value, error, warning } = schema
+      ? { value: data, error: {}, warning: {} }
+      : schema?.validate(data);
     try {
-      return await axios.put(`${API}${model}/${action}`, value);
-    } catch (e) {
-      throw Error(e);
+      console.log(value);
+      return await axios.put(
+        `${API}${model}/${action}`,
+        { data: value },
+        {
+          headers,
+        }
+      );
+    } catch (e: any) {
+      if ((e as AxiosError).response.status !== 500) throw Error(e);
     }
   } else {
     throw Error("no data");
@@ -80,13 +92,19 @@ const createData = async (
 const postData = async (
   model: string,
   action: string = "createMany",
-  data: any | Array<any>
+  data: any | Array<any>,
+  headers: any = null
 ): Promise<AxiosResponse> => {
   if (!!data) {
     const schema = createSchema(model) as Joi.ObjectSchema;
-    const { value, error, warning } = schema.validate(data);
+    console.log(schema, model);
+    const { value, error, warning } = schema
+      ? { value: data, error: {}, warning: {} }
+      : schema?.validate(data);
     try {
-      return await axios.post(`${API}${model}/${action}`, value);
+      return await axios.post(`${API}${model}/${action}`, value, {
+        headers,
+      });
     } catch (e) {
       throw Error(e);
     }
@@ -98,14 +116,19 @@ const postData = async (
 const deleteUnique = async (
   model: string,
   action: string = "delete",
-  data: any | Array<any>
+  data: any | Array<any>,
+  headers: any = null
 ): Promise<AxiosResponse> => {
   if (!!data) {
     const schema = findUniqueSchema(model) as Joi.ObjectSchema;
     try {
-      const { value, error, warning } = schema.validate(data);
+      const { value, error, warning } = schema
+        ? { value: data, error: {}, warning: {} }
+        : schema?.validate(data);
       console.log("++++", value);
-      return await axios.delete(`${API}${model}/${action}/${value.id}`);
+      return await axios.delete(`${API}${model}/${action}/${value.id}`, {
+        headers,
+      });
     } catch (e) {
       throw Error(e);
     }
@@ -117,12 +140,15 @@ const deleteUnique = async (
 const updateUnique = async (
   model: string,
   action: string = "update",
-  data: any | Array<any>
+  data: any | Array<any>,
+  headers: any = null
 ): Promise<AxiosResponse> => {
   if (!!data) {
     const schema = findUniqueSchema(model) as Joi.ObjectSchema;
     try {
-      const { value, error, warning } = schema.validate(data);
+      const { value, error, warning } = schema
+        ? { value: data, error: {}, warning: {} }
+        : schema?.validate(data);
       const id = value.id;
       delete value.id;
       return await axios.patch(
@@ -130,7 +156,10 @@ const updateUnique = async (
           id: true,
           email: true,
         })}`,
-        value
+        value,
+        {
+          headers,
+        }
       );
     } catch (e) {
       throw Error(e);
@@ -159,7 +188,9 @@ const userLogin = async (
   if (!!data) {
     const schema = findManySchemas(model) as Joi.ObjectSchema;
     try {
-      const { value, error, warning } = schema.validate(data);
+      const { value, error, warning } = schema
+        ? { value: data, error: {}, warning: {} }
+        : schema?.validate(data);
       return await axios.post(`${API_EXT}login`, value);
     } catch (e) {
       console.log(`${API_EXT}login`);

@@ -19,13 +19,44 @@ import {
 
 const noop: Function = () => {};
 
+type Hook = {
+  create?: Function;
+  delete?: Function;
+  update?: Function;
+};
+
+type HookList = {
+  before: {
+    create?: Function[];
+    delete?: Function[];
+    update?: Function[];
+  };
+  after: {
+    create?: Function[];
+    delete?: Function[];
+    update?: Function[];
+  };
+};
+
 class Resource {
-  _name: string;
-  _values: Array<any>;
-  _query: PrismaQuery;
-  _prisma: PrismaClient;
-  _action: string;
-  _client: any;
+  #name: string;
+  #values: Array<any>;
+  #query: PrismaQuery;
+  #prisma: PrismaClient;
+  #action: string;
+  #client: any;
+  #hooks: HookList = {
+    before: {
+      create: [],
+      delete: [],
+      update: [],
+    },
+    after: {
+      create: [],
+      delete: [],
+      update: [],
+    },
+  };
 
   constructor(
     name: string,
@@ -33,42 +64,34 @@ class Resource {
     action: string,
     rules: PrismaRules<PrismaRule>
   ) {
-    this._name = name;
-    this._prisma = prisma;
-    this._action = action;
+    this.#name = name;
+    this.#prisma = prisma;
+    this.#action = action;
     this.rules(rules);
   }
   //LINK see https://github.com/prisma/prisma-client-extensions/blob/main/obfuscated-fields/script.ts
   rules(fields: PrismaRules<PrismaRule>) {
-    this._client = this._prisma.$extends({
+    this.#client = this.#prisma.$extends({
       result: {
-        [this._name]: fields as any,
+        [this.#name]: fields as any,
       },
     });
   }
 
-  async setBeforeHooks(funcs: Array<Function> = [noop]): Promise<any> {
-    // something to execute before
-    const fPromises: Array<Function> = [];
-    funcs.forEach(async (f: Function) => {
-      fPromises.push(await f(this.values));
+  setBeforeHooks(hooks: Array<Hook>): void {
+    hooks.forEach((hook) => {
+      Object.keys(hook).forEach((action) => {
+        this.#hooks.before[action].push(hook[action]);
+      });
     });
-
-    return fPromises.length > 0
-      ? await Promise.all(fPromises)
-      : await Promise.all([]);
   }
 
-  async setAfterHooks(funcs: Array<Function> = [noop]): Promise<any> {
-    // something to execute before
-    const fPromises: Array<Function> = [];
-    funcs.forEach(async (f: Function) => {
-      fPromises.push(await f(this.values));
+  setAfterHooks(hooks: Array<Hook>): void {
+    hooks.forEach((hook) => {
+      Object.keys(hook).forEach((action) => {
+        this.#hooks.after[action].push(hook[action]);
+      });
     });
-
-    return fPromises.length > 0
-      ? await Promise.all(fPromises)
-      : await Promise.all([]);
   }
 
   validatePayload(data: any) {
@@ -83,9 +106,11 @@ class Resource {
     if (notAnEmptyObject(request.query) && !!request.query) {
       // for route like : ?where='{"id": ""}'&select='["id","email"]'
       if (!!request.query.select) {
-        const selectFields = JSON.parse(request.query.select).map((key:string) => ({
-          [key]: true,
-        }));
+        const selectFields = JSON.parse(request.query.select).map(
+          (key: string) => ({
+            [key]: true,
+          })
+        );
         select = !!request.query?.select ? selectFields : null;
       }
 
@@ -112,32 +137,46 @@ class Resource {
       }
     }
     // need to remove empty or {} for prisma (where === {} throws prisma error), see prisma doc
-    this._query = removeEmptyObjectForPrismaQuery(query);
+    this.#query = removeEmptyObjectForPrismaQuery(query);
     return this;
   }
 
+  async executeAfterHooksOnAction(action: string) {}
+
   async execute() {
-    // this.beforeHook();
-    this._values = await (this._client[this._name as any] as any)[this._action](
-      this._query
+    // before hook
+    if (this.#hooks.before[this.#action]) {
+      this.#hooks.before[this.#action].forEach((f: Function) => {
+        this.#query = f(this.#query) || this.#query;
+      });
+    }
+    this.#values = await (this.#client[this.#name as any] as any)[this.#action](
+      this.#query
     );
-    // this.afterHook();
-    return this._values || [];
+    // after hook
+    if (this.#hooks.after[this.#action]) {
+      this.#hooks.after[this.#action].forEach((f: Function) => {
+        this.#values = f(this.#values) || this.#values;
+      });
+    }
+    return this.#values || [];
   }
 
   set query(q: any) {
-    this._query = q;
+    this.#query = q;
   }
 
   set values(values: Array<any>) {
-    this._values = values;
+    this.#values = values;
   }
   get values(): Array<any> {
-    return this._values;
+    return this.#values;
   }
   get name(): string {
-    return this._name;
+    return this.#name;
   }
 }
 
 export default Resource;
+
+export type { Hook, HookList };

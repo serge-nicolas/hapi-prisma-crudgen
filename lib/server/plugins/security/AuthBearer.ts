@@ -74,7 +74,6 @@ const init = async (
     validate,
     unauthorized: (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
       const ip = request;
-      console.log(ip);
       return Boom.forbidden();
     },
   });

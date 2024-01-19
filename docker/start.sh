@@ -1,1 +1,1 @@
-docker compose --profile db up
+docker compose --profile redis up

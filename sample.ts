@@ -1,4 +1,4 @@
-import { join as pathJoin } from "node:path";
+import { join as pathJoin, dirname as pathDirname } from "node:path";
 
 import Pug from "pug";
 import Hapi from "@hapi/hapi";
@@ -8,6 +8,13 @@ import translate from "./lib/server/plugins/translate";
 
 import Youch from "youch";
 import forTerminal from "youch-terminal";
+
+
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = pathDirname(__filename);
+
 
 const viewsPath = pathJoin(__dirname, "lib/view/");
 

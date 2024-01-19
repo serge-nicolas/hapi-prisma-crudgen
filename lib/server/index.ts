@@ -11,8 +11,6 @@ import "dotenv/config";
 import ServerConfigOptions from "./typings/serverConfigOptions";
 import type Hapi from "@hapi/hapi";
 
-import excludeFieldsForResultPlugin from "./plugins/excludeFieldsForResultPlugin";
-
 import AdminServer from "./generator";
 
 /**
@@ -28,7 +26,7 @@ const HapiPrismaCrudPlugin = {
         plugin: excludeFieldsForResultPlugin(),
       }, */
       {
-        plugin: require("hapi-dev-errors"),
+        plugin: (await import("hapi-dev-errors")).default,
         options: {
           toTerminal: true,
           showErrors: process.env.NODE_ENV !== "production",

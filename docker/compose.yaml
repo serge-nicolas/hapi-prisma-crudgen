@@ -2,29 +2,27 @@ version: "2"
 
 services:
   redis:
+    profiles:
+      - services
     image: "bitnami/redis:latest"
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
       - REDIS_PORT_NUMBER=6379
     ports:
-      - '6379:6379'
+      - 6379:6379
     volumes:
-      - /var/local/docker-volumes/redis:/bitnami/redis/data
+      - ./db/redis:/bitnami/redis/data
     network_mode: host
     restart: unless-stopped
   redis-insight:
+    profiles:
+      - services
     image: "redislabs/redisinsight:latest"
     ports: 
-      - "8001:8001"
+      - 8001:8001
     volumes:
-      - /var/local/docker-volumes/redis-insight:/db
+      - ./db/redis-insight:/db
     restart: unless-stopped
-  bullboard:
-    container_name: bullboard
-    image: deadly0/bull-board
-    restart: unless-stopped
-    ports:
-      - 3000:3000
   mongodb:
     profiles:
       - db

@@ -1,4 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
+import { publish } from "../controlers/eventBus";
+
 import Resource from "./resource";
 
 const rules: any = {
@@ -10,6 +12,10 @@ const rules: any = {
   },
 };
 
+const broadcastResult: Function =
+  (name: string, action: string) => (message: any) =>
+    publish(`${name}/${action}`, JSON.stringify(message));
+
 const init = (
   name: string,
   prisma: PrismaClient,
@@ -19,7 +25,7 @@ const init = (
     const currentResource: Resource = new Resource(name, prisma, action, rules);
     //DOC hooks executed in order (use promise.all)
     currentResource.setBeforeHooks([]);
-    currentResource.setAfterHooks([]);
+    currentResource.setAfterHooks([{ create: broadcastResult(name, action) }]);
     return currentResource;
   } catch (error) {
     console.log(error);

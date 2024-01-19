@@ -19,6 +19,10 @@ import initPugAdmin from "../view/register";
 import loggerPlugin from "./plugins/logger";
 import securityPlugin from "./plugins/security";
 import otherRoutesPlugin from "./plugins/otherRoutes";
+import servicesPlugin from "./plugins/services";
+
+// event bus need util Prisma Pulse available
+import { publisher, subscriber } from "./controlers/eventBus";
 
 class AdminServer {
   config: any;
@@ -118,9 +122,29 @@ class AdminServer {
       await this.server.register([loggerPlugin], { once: true });
       await this.server.register([securityPlugin], { once: true });
       await this.server.register([otherRoutesPlugin], { once: true });
+
       await this.initExternalPlugins();
-      await this.initCrud();// init prisma CRUD
-      await this.initViews();// init HTMl rendering
+      await this.initCrud(); // init prisma CRUD
+      await this.server.register(
+        {
+          plugin: servicesPlugin,
+          options: {
+            withBullBoard: false,
+            services: [
+              {
+                name: "image-convert",
+                callback: (res: any) => {
+                  console.log(res);
+                },
+              },
+            ],
+          },
+        },
+        {
+          once: true,
+        }
+      );
+      await this.initViews(); // init HTMl rendering
       return this.server;
     } catch (error) {
       console.log(error);

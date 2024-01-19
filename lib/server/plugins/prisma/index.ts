@@ -1,11 +1,11 @@
 import { $Enums } from "@prisma/client";
 
-import prismaClientInstance from "../controlers/prismaInstance";
+import prismaClientInstance from "../../controlers/prismaInstance";
 import type { PrismaClient } from "@prisma/client";
 
 import Hapi from "@hapi/hapi";
 import type { Logger } from "winston";
-import createPluginForModel from "../controlers/createPluginForModel";
+import createPluginForModel from "./createPluginForModel";
 import Boom from "@hapi/boom";
 
 declare module "@hapi/hapi" {

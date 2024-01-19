@@ -12,6 +12,12 @@
 import Hapi from "@hapi/hapi";
 import { loadRoutesInFolder } from "../../controlers/routes";
 
+import { fileURLToPath } from "url";
+import { dirname } from "node:path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 declare module "@hapi/hapi" {
   interface ServerApplicationState {
     logger: any;
@@ -25,10 +31,13 @@ const otherRoutes: Hapi.Plugin<null> = {
   },
   register: async function (server: Hapi.Server, options: any = {}) {
     const logger = server.app.logger;
-    logger.debug("loading other routes", Object.keys(server.app).includes("config"))
+    logger.debug(
+      "loading other routes",
+      Object.keys(server.app).includes("config")
+    );
     if (Object.keys(server.app).includes("config")) {
       const config = server.app.config;
-      
+
       await loadRoutesInFolder(
         server,
         [`${__dirname}/routes`],

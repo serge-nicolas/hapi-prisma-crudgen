@@ -6,14 +6,18 @@ import { resolve } from "node:path";
 
 import type Hapi from "@hapi/hapi";
 import type { PrismaClient } from "@prisma/client";
-import prismaClientInstance from "../controlers/prismaInstance";
+import prismaClientInstance from "../../controlers/prismaInstance.ts";
 
-import type { PrismaActionMethod, HapiDefinedRoute } from "../typings/server";
+import type {
+  PrismaActionMethod,
+  HapiDefinedRoute,
+} from "../../typings/server.ts";
 
-import configure from "../common/loadConfig";
-import validateFieldsForRoute from "../validation/fields";
+import configure from "../../common/loadConfig.ts";
+import validateFieldsForRoute from "../../validation/fields.ts";
 import { ReqRefDefaults, ServerRoute } from "@hapi/hapi";
-import { notEmpty } from "../common/helpers/cleaners.ts";
+import { notEmpty } from "../../common/helpers/cleaners.ts";
+
 
 const config = { ...configure("server"), ...configure("validate") };
 
@@ -50,7 +54,7 @@ const createRoute = async (
       route.action
     );
   } else {
-    resource = (await import(`../models/resource.handler.default.ts`)).init(
+    resource = (await import(`../../models/resource.handler.default.ts`)).init(
       _resourceName,
       prismaClient,
       route.action
@@ -70,7 +74,7 @@ const createRoute = async (
             : {},
         },
       },
-      handler: async (request: Hapi.Request, h: any) => {
+      handler: async (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
         try {
           //DOC default to route if no controler defined for this route
           const handler: Function = (
@@ -83,9 +87,9 @@ const createRoute = async (
             },
             _request: Hapi.Request<Hapi.ReqRefDefaults>
           ) => _resource.buildQuery(_request).execute();
-
-          const response = await handler(resource, request);
          
+          const response = await handler(resource, request);
+          
           return response;
         } catch (e) {
           throw new Error(e);
@@ -115,7 +119,7 @@ const createFullPathForRoute = (route: any): string => {
   return "/api/" + route.name.toLowerCase() + "/" + route.path;
 };
 /**
- * define routes from prisma schema
+ * define routes from prisma schema in independant plugin
  *
  * @param {string} name
  * @return {*}  {Hapi.Plugin<null>}
@@ -137,13 +141,16 @@ const init = (name: string): Hapi.Plugin<null> => {
             path: route.path,
             name,
           });
-          if (route)
+          if (route) {
             return {
               method: route.method,
               path,
-              handler: (request: Hapi.Request, h: Hapi.ResponseToolkit) =>
-                route.handler(name, request, h),
+              handler: (request: Hapi.Request, h: Hapi.ResponseToolkit) => {
+                return route.handler(name, request, h);
+              },
             } as ServerRoute<ReqRefDefaults>;
+          }
+
           return undefined;
         })
         .filter(notEmpty);

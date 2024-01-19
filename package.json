@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "./sample.ts",
   "author": "Serge NICOLAS",
+  "type": "module",
   "license": "MIT",
   "decription": "POC of scheama first CMS build around HapiJS, Prisma, PUG, Tailwind",
   "engines": {
@@ -29,9 +30,11 @@
     "dev:generate:css": "tailwindcss -i ./lib/view/css/index.css -o ./dist/assets/all.css --watch",
     "dev:test:crud": "jest --config jest.config.ts",
     "build": "tsc",
-    "dev:test:single": "jest --config jest.config.ts ./lib/server/test/api/${0}"
+    "dev:test:single": "jest --config jest.config.ts ./lib/server/test/api/${0}",
+    "dev:test-esm:single": "node --loader ts-node/esm ./lib/server/test/api/${0}"
   },
   "dependencies": {
+    "@bull-board/hapi": "^5.13.0",
     "@hapi/boom": "^10.0.1",
     "@hapi/hapi": "^21.3.2",
     "@hapi/inert": "^7.1.0",
@@ -41,10 +44,13 @@
     "@hapi/wreck": "^18.0.1",
     "@now-ims/hapi-now-auth": "^2.1.0",
     "@prisma/client": "^5.7.1",
+    "@tensorflow/tfjs-node": "^4.16.0",
     "@types/hapi__nes": "^11.0.7",
     "axios": "^1.6.2",
     "blipp": "^4.0.2",
+    "bullmq": "^5.1.1",
     "dotenv": "^16.3.1",
+    "extract-colors": "^4.0.2",
     "glob": "^10.3.10",
     "hapi-auth-bearer-token": "^8.0.0",
     "hapi-auth-jwt2": "^10.4.0",
@@ -56,6 +62,8 @@
     "postcss": "^8.4.32",
     "postcss-import": "^15.1.0",
     "pug": "^3.0.2",
+    "redis": "^4.6.12",
+    "sharp": "^0.33.2",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.2.2",
